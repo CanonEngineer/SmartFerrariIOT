@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520" role="img" aria-label="Arquitetura L1-L5">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#12141a"/><stop offset="100%" stop-color="#0c0d0f"/>
+    </linearGradient>
+    <linearGradient id="rosso" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8a0000"/><stop offset="100%" stop-color="#d40000"/>
+    </linearGradient>
+  </defs>
+  <rect width="920" height="520" rx="16" fill="url(#bg)"/>
+  <text x="36" y="42" fill="#f4f1ec" font-family="Segoe UI, Arial" font-size="22" font-weight="700">SmartFerrariIOT  Arquitetura L1’L5</text>
+  <text x="36" y="68" fill="#8b8680" font-family="Consolas, monospace" font-size="12">Edge sync Arduino ” Raspberry · Digital Twin · Research Lab</text>
+
+  <!-- layers -->
+  <g font-family="Segoe UI, Arial">
+    <rect x="40" y="100" width="840" height="64" rx="10" fill="#1e222b" stroke="#d40000" stroke-width="1.5"/>
+    <text x="58" y="128" fill="#ff6b6b" font-size="13" font-weight="700">L5 · EXPERIÊNCIA</text>
+    <text x="58" y="148" fill="#c8c4bc" font-size="13">UI Digital Twin · Web Audio · Visão · Research Lab · Paper Pack LaTeX</text>
+
+    <rect x="40" y="178" width="840" height="64" rx="10" fill="#1a1d24" stroke="rgba(244,241,236,0.14)"/>
+    <text x="58" y="206" fill="#c9a227" font-size="13" font-weight="700">L4 · ORQUESTRAÇÃO</text>
+    <text x="58" y="226" fill="#c8c4bc" font-size="13">FastAPI :8001 · SQLite · Telemetria SQI · HMAC · Audit hash-chain · HIL</text>
+
+    <rect x="40" y="256" width="840" height="64" rx="10" fill="#1a1d24" stroke="rgba(244,241,236,0.14)"/>
+    <text x="58" y="284" fill="#3d9a6a" font-size="13" font-weight="700">L3 · HUB EDGE</text>
+    <text x="58" y="304" fill="#c8c4bc" font-size="13">Raspberry agent · heartbeat · bridge MQTT · sync_pulse</text>
+
+    <rect x="40" y="334" width="840" height="64" rx="10" fill="#1a1d24" stroke="rgba(244,241,236,0.14)"/>
+    <text x="58" y="362" fill="#7ec8e8" font-size="13" font-weight="700">L2 · PROTOCOLO</text>
+    <text x="58" y="382" fill="#c8c4bc" font-size="13">MQTT ferrari/* · REST /api/* · WebSocket /api/ws · QoS AT_LEAST_ONCE</text>
+
+    <rect x="40" y="412" width="840" height="64" rx="10" fill="#1a1d24" stroke="rgba(244,241,236,0.14)"/>
+    <text x="58" y="440" fill="#e8c4a0" font-size="13" font-weight="700">L1 · ATUADORES / SENSORES</text>
+    <text x="58" y="460" fill="#c8c4bc" font-size="13">Portas · Teto · Motor · Farol · Som · GPS · Spoiler · A/C · Alarme · Trava</text>
+  </g>
+  <rect x="40" y="490" width="120" height="6" rx="3" fill="url(#rosso)"/>
+</svg>

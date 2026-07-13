@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-label="Mapa mental SmartFerrariIOT">
+  <rect width="960" height="560" rx="16" fill="#0c0d0f"/>
+  <text x="36" y="40" fill="#f4f1ec" font-family="Segoe UI, Arial" font-size="20" font-weight="700">Mapa mental  Tree of Knowledge (lab)</text>
+
+  <!-- center -->
+  <circle cx="480" cy="280" r="78" fill="#2a1212" stroke="#d40000" stroke-width="2"/>
+  <text x="480" y="272" text-anchor="middle" fill="#ff8a80" font-family="Segoe UI, Arial" font-size="14" font-weight="700">SmartFerrari</text>
+  <text x="480" y="292" text-anchor="middle" fill="#f4f1ec" font-family="Segoe UI, Arial" font-size="14" font-weight="700">IOT</text>
+  <text x="480" y="312" text-anchor="middle" fill="#8b8680" font-family="Consolas, monospace" font-size="10">postdoc lab</text>
+
+  <!-- branches -->
+  <g font-family="Segoe UI, Arial" text-anchor="middle">
+    <line x1="480" y1="202" x2="480" y2="110" stroke="#8b8680"/>
+    <rect x="400" y="50" width="160" height="56" rx="10" fill="#1e222b" stroke="#c9a227"/>
+    <text x="480" y="75" fill="#e4d4a0" font-size="13" font-weight="700">Digital Twin</text>
+    <text x="480" y="94" fill="#8b8680" font-size="11">UML / INV</text>
+
+    <line x1="410" y1="230" x2="220" y2="140" stroke="#8b8680"/>
+    <rect x="100" y="90" width="150" height="56" rx="10" fill="#1e222b" stroke="#7ec8e8"/>
+    <text x="175" y="115" fill="#7ec8e8" font-size="13" font-weight="700">Edge Sync</text>
+    <text x="175" y="134" fill="#8b8680" font-size="11">Arduino”Pi</text>
+
+    <line x1="550" y1="230" x2="740" y2="140" stroke="#8b8680"/>
+    <rect x="710" y="90" width="150" height="56" rx="10" fill="#1e222b" stroke="#3d9a6a"/>
+    <text x="785" y="115" fill="#9ed4b5" font-size="13" font-weight="700">Web Audio</text>
+    <text x="785" y="134" fill="#8b8680" font-size="11">horn/alarm/RPM</text>
+
+    <line x1="410" y1="330" x2="220" y2="420" stroke="#8b8680"/>
+    <rect x="100" y="410" width="150" height="56" rx="10" fill="#1e222b" stroke="#ff6b6b"/>
+    <text x="175" y="435" fill="#ff8a80" font-size="13" font-weight="700">Security</text>
+    <text x="175" y="454" fill="#8b8680" font-size="11">HMAC · audit</text>
+
+    <line x1="480" y1="358" x2="480" y2="430" stroke="#8b8680"/>
+    <rect x="400" y="440" width="160" height="56" rx="10" fill="#1e222b" stroke="#e8c4a0"/>
+    <text x="480" y="465" fill="#e8c4a0" font-size="13" font-weight="700">HIL / QoS</text>
+    <text x="480" y="484" fill="#8b8680" font-size="11">delay · loss</text>
+
+    <line x1="550" y1="330" x2="740" y2="420" stroke="#8b8680"/>
+    <rect x="710" y="410" width="150" height="56" rx="10" fill="#1e222b" stroke="#b8e8ff"/>
+    <text x="785" y="435" fill="#b8e8ff" font-size="13" font-weight="700">Energy</text>
+    <text x="785" y="454" fill="#8b8680" font-size="11">P · bat · fuel</text>
+  </g>
+</svg>

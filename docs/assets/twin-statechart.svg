@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 420" role="img" aria-label="Statechart gêmeo digital">
+  <rect width="920" height="420" rx="16" fill="#0c0d0f"/>
+  <text x="36" y="40" fill="#f4f1ec" font-family="Segoe UI, Arial" font-size="20" font-weight="700">Gêmeo digital  máquina de estados</text>
+  <text x="36" y="64" fill="#8b8680" font-family="Consolas, monospace" font-size="12">SECURE ’ IDLE ’ READY ’ RUNNING ’ SPORT · invariantes INV-01&06</text>
+
+  <!-- states -->
+  <g font-family="Segoe UI, Arial" text-anchor="middle">
+    <rect x="40" y="120" width="140" height="70" rx="10" fill="#2a1212" stroke="#d40000"/>
+    <text x="110" y="150" fill="#ff8a80" font-size="14" font-weight="700">SECURE</text>
+    <text x="110" y="170" fill="#8b8680" font-size="11">alarm+lock</text>
+
+    <rect x="220" y="120" width="140" height="70" rx="10" fill="#1e222b" stroke="rgba(244,241,236,0.2)"/>
+    <text x="290" y="150" fill="#f4f1ec" font-size="14" font-weight="700">IDLE</text>
+    <text x="290" y="170" fill="#8b8680" font-size="11">engine off</text>
+
+    <rect x="400" y="120" width="140" height="70" rx="10" fill="#1e222b" stroke="rgba(244,241,236,0.2)"/>
+    <text x="470" y="150" fill="#f4f1ec" font-size="14" font-weight="700">READY</text>
+    <text x="470" y="170" fill="#8b8680" font-size="11">unlocked</text>
+
+    <rect x="580" y="120" width="140" height="70" rx="10" fill="#1e222b" stroke="#c9a227"/>
+    <text x="650" y="150" fill="#e4d4a0" font-size="14" font-weight="700">RUNNING</text>
+    <text x="650" y="170" fill="#8b8680" font-size="11">engine on</text>
+
+    <rect x="740" y="120" width="140" height="70" rx="10" fill="#3a0a0a" stroke="#ff4d4d"/>
+    <text x="810" y="150" fill="#ff6b6b" font-size="14" font-weight="700">SPORT</text>
+    <text x="810" y="170" fill="#8b8680" font-size="11">spoiler out</text>
+  </g>
+
+  <!-- arrows -->
+  <g stroke="#8b8680" stroke-width="1.5" fill="none" marker-end="url(#arrow)">
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#8b8680"/>
+      </marker>
+    </defs>
+    <path d="M180 155 H220"/>
+    <path d="M360 155 H400"/>
+    <path d="M540 155 H580"/>
+    <path d="M720 155 H740"/>
+  </g>
+
+  <!-- invariants box -->
+  <rect x="40" y="230" width="840" height="150" rx="12" fill="#141618" stroke="rgba(244,241,236,0.12)"/>
+  <text x="60" y="262" fill="#c9a227" font-family="Segoe UI, Arial" font-size="14" font-weight="700">Invariantes de segurança (rejeição 409 / WS)</text>
+  <g fill="#c8c4bc" font-family="Consolas, monospace" font-size="12">
+    <text x="60" y="290">INV-01  Não abrir porta se Sport ' velocidade &gt; 0</text>
+    <text x="60" y="310">INV-02  Não ligar motor com alarme armado</text>
+    <text x="60" y="330">INV-03  Sport requer motor ON</text>
+    <text x="60" y="350">INV-04  Teto bloqueado se velocidade &gt; 40 km/h</text>
+    <text x="480" y="290">INV-05  Travar Ò fechar portas</text>
+    <text x="480" y="310">INV-06  Não armar alarme com motor ligado</text>
+  </g>
+</svg>
