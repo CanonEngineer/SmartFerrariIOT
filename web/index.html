@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ferrari IoT — Postdoc Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@600;700&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <h1>Ferrari IoT Lab</h1>
+        <p>Pós-doutorado · Arduino ↔ Raspberry</p>
+      </div>
+    </div>
+    <div class="top-meta">
+      <span id="sqi-status" class="status sync">SQI —</span>
+      <span id="ws-status" class="status offline">WS offline</span>
+      <span id="sync-status" class="status sync">SYNC —</span>
+      <span id="last-event" class="event">Iniciando…</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage">
+      <div class="stage-head">
+        <h2>Digital Twin</h2>
+        <span>SF90 · animações · edge sync</span>
+      </div>
+      <div class="stage-grid">
+        <svg id="ferrari-svg" viewBox="0 0 960 560" role="img" aria-label="Ferrari SF90 digital twin">
+          <defs>
+            <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#d8dce0"/>
+              <stop offset="55%" stop-color="#c4c8cd"/>
+              <stop offset="100%" stop-color="#aeb3b9"/>
+            </linearGradient>
+            <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a3d42"/>
+              <stop offset="40%" stop-color="#23262b"/>
+              <stop offset="100%" stop-color="#121417"/>
+            </linearGradient>
+            <linearGradient id="rossoBody" x1="0" y1="0" x2="0.35" y2="1">
+              <stop offset="0%" stop-color="#ff3b2f"/>
+              <stop offset="28%" stop-color="#e10600"/>
+              <stop offset="62%" stop-color="#b00000"/>
+              <stop offset="100%" stop-color="#5c0000"/>
+            </linearGradient>
+            <linearGradient id="rossoHi" x1="0" y1="0" x2="1" y2="0.3">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+              <stop offset="35%" stop-color="#ff8a80" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="glassGrad" x1="0" y1="0" x2="0.2" y2="1">
+              <stop offset="0%" stop-color="#e8f4ff" stop-opacity="0.55"/>
+              <stop offset="50%" stop-color="#6a9bb0" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#1a2a33" stop-opacity="0.65"/>
+            </linearGradient>
+            <linearGradient id="carbon" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2c2c2c"/>
+              <stop offset="50%" stop-color="#111"/>
+              <stop offset="100%" stop-color="#3a3a3a"/>
+            </linearGradient>
+            <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f0f0f0"/>
+              <stop offset="45%" stop-color="#8a8a8a"/>
+              <stop offset="100%" stop-color="#e8e8e8"/>
+            </linearGradient>
+            <linearGradient id="rimMetal" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d0d0d0"/>
+              <stop offset="50%" stop-color="#555"/>
+              <stop offset="100%" stop-color="#b8b8b8"/>
+            </linearGradient>
+            <pattern id="honey" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+              <rect width="8" height="8" fill="#0a0a0a"/>
+              <path d="M0 4h8M4 0v8" stroke="#2a2a2a" stroke-width="0.8"/>
+            </pattern>
+            <radialGradient id="headGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff8e1"/>
+              <stop offset="45%" stop-color="#ffe082"/>
+              <stop offset="100%" stop-color="#ff9800" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="softShadow" x="-25%" y="-15%" width="150%" height="140%">
+              <feDropShadow dx="0" dy="18" stdDeviation="14" flood-color="#000" flood-opacity="0.55"/>
+            </filter>
+            <clipPath id="bodyClip">
+              <path d="M210,310 C230,210 310,155 420,145 C520,136 620,155 700,200 C760,235 800,285 815,330 C820,350 810,365 785,372 L240,385 C215,380 205,350 210,310 Z"/>
+            </clipPath>
+          </defs>
+
+          <rect x="0" y="0" width="960" height="560" fill="url(#wallGrad)"/>
+          <g stroke="#9aa0a6" stroke-width="1" opacity="0.55">
+            <line x1="0" y1="72" x2="960" y2="72"/>
+            <line x1="0" y1="148" x2="960" y2="148"/>
+            <line x1="0" y1="224" x2="960" y2="224"/>
+            <line x1="0" y1="300" x2="960" y2="300"/>
+            <line x1="180" y1="0" x2="180" y2="330"/>
+            <line x1="480" y1="0" x2="480" y2="330"/>
+            <line x1="780" y1="0" x2="780" y2="330"/>
+          </g>
+          <rect x="0" y="330" width="960" height="230" fill="url(#floorGrad)"/>
+          <ellipse cx="500" cy="430" rx="310" ry="28" fill="#000" opacity="0.35"/>
+          <text x="36" y="42" class="room-label" fill="#6a7076">ATELIER · DIGITAL TWIN</text>
+
+          <g transform="translate(780 70)">
+            <ellipse id="track-ring" cx="70" cy="55" rx="62" ry="32" fill="none" stroke="#8a9098" stroke-width="10" opacity="0.35"/>
+            <ellipse cx="70" cy="55" rx="62" ry="32" fill="none" stroke="#5a6068" stroke-width="1.5" stroke-dasharray="6 8"/>
+            <circle id="gps-dot" cx="132" cy="55" r="6" fill="#c9a227" opacity="0.2"/>
+            <text x="28" y="12" class="tiny" fill="#6a7076">GPS TRACK</text>
+          </g>
+
+          <g id="car">
+            <path d="M620,250 C680,245 740,270 770,310 C790,340 800,360 790,375 L640,385 C630,320 640,270 620,250 Z" fill="#8a0500" opacity="0.95"/>
+
+            <path id="body" d="M210,310
+              C225,235 280,175 360,155
+              C430,138 520,140 600,165
+              C670,188 730,230 770,285
+              C790,315 800,345 795,365
+              C790,378 770,385 740,388
+              L250,395
+              C220,390 205,355 210,310 Z"
+              fill="url(#rossoBody)" stroke="#ff6b63" stroke-width="1" filter="url(#softShadow)"/>
+
+            <g clip-path="url(#bodyClip)">
+              <path d="M250,220 C360,170 500,165 650,210" fill="none" stroke="url(#rossoHi)" stroke-width="28" stroke-linecap="round"/>
+              <path d="M240,300 C380,280 560,275 720,310" fill="none" stroke="#000" stroke-width="22" opacity="0.12" stroke-linecap="round"/>
+              <path d="M260,340 C420,355 600,350 740,335" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>
+            </g>
+
+            <path d="M205,330 C230,318 280,310 330,312 L340,348 C290,352 240,355 210,348 Z" fill="#111"/>
+            <path d="M240,345 L300,338 L305,358 L245,362 Z" fill="url(#honey)" stroke="#222" stroke-width="0.8"/>
+            <path d="M310,336 L355,332 L358,352 L314,355 Z" fill="url(#honey)" stroke="#222" stroke-width="0.8"/>
+            <path d="M360,210 L420,200" stroke="#6a0000" stroke-width="4" opacity="0.45" stroke-linecap="round"/>
+            <path d="M370,222 L430,212" stroke="#6a0000" stroke-width="3.5" opacity="0.4" stroke-linecap="round"/>
+
+            <path d="M380,195 C440,155 540,148 620,175 L600,235 C530,210 450,212 400,235 Z" fill="url(#glassGrad)" stroke="#b8dceb" stroke-width="0.9"/>
+            <path d="M400,205 C470,175 550,172 600,190" fill="none" stroke="#fff" stroke-width="2" opacity="0.28"/>
+
+            <g id="roof-group">
+              <path id="roof-panel" class="roof-panel"
+                d="M420,175 C480,145 560,145 620,168 L605,200 C550,180 480,178 435,195 Z"
+                fill="url(#carbon)" stroke="#555" stroke-width="1"/>
+              <path class="roof-panel" d="M440,182 C500,160 560,160 600,175" fill="none" stroke="#888" stroke-width="1" opacity="0.35"/>
+            </g>
+
+            <path d="M620,185 C650,200 670,230 675,265 L640,275 C635,240 625,210 605,195 Z" fill="url(#glassGrad)" opacity="0.75"/>
+
+            <g id="door-driver-group" transform="translate(340 200)">
+              <g id="door-driver" class="door-panel">
+                <path d="M0,40 C15,10 55,0 95,15 L110,95 C70,115 25,120 5,100 Z" fill="#c40000" stroke="#ff8a80" stroke-width="1.2"/>
+                <path d="M18,45 C45,28 75,30 95,42" fill="none" stroke="#ffc4bf" stroke-width="1.2" opacity="0.4"/>
+                <path d="M25,55 C40,70 55,85 70,95" fill="url(#glassGrad)" opacity="0.5"/>
+                <rect x="88" y="55" width="10" height="3" rx="1" fill="url(#chrome)"/>
+              </g>
+            </g>
+
+            <g id="door-passenger-group" transform="translate(560 185)">
+              <g id="door-passenger" class="door-panel passenger">
+                <path d="M0,30 C20,5 55,-5 85,12 L95,80 C65,95 25,98 5,85 Z" fill="#a80000" stroke="#ff8a80" stroke-width="1"/>
+                <path d="M15,35 C40,20 65,22 80,35" fill="none" stroke="#ffb3ae" stroke-width="1" opacity="0.35"/>
+              </g>
+            </g>
+
+            <g transform="translate(318 275)">
+              <path d="M0,-14 L10,-10 L12,10 L0,16 L-12,10 L-10,-10 Z" fill="#f5c518" stroke="#8a7000" stroke-width="1"/>
+              <text x="-3.5" y="5" font-size="11" fill="#1a1a1a" font-family="Georgia, serif" font-weight="700">f</text>
+            </g>
+
+            <g id="sound-waves" opacity="0">
+              <path d="M450,150 Q470,120 490,150" fill="none" stroke="#c9a227" stroke-width="2"/>
+              <path d="M470,140 Q495,100 520,140" fill="none" stroke="#c9a227" stroke-width="2"/>
+              <path d="M490,132 Q520,88 550,132" fill="none" stroke="#e0c060" stroke-width="1.5" opacity="0.7"/>
+            </g>
+
+            <g id="spoiler" class="spoiler">
+              <rect x="-55" y="-6" width="110" height="8" rx="2" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+              <rect x="-48" y="-10" width="96" height="4" rx="1" fill="#333"/>
+              <rect x="-8" y="2" width="5" height="22" rx="1" fill="#2a2a2a"/>
+              <rect x="4" y="2" width="5" height="22" rx="1" fill="#2a2a2a"/>
+              <text class="spoiler-tag" x="-20" y="-16" fill="#c9a227" font-size="9" font-family="JetBrains Mono, monospace" opacity="0">ACTIVE</text>
+            </g>
+
+            <g id="headlight-group">
+              <path id="hl-left" d="M255,295 C275,285 310,288 328,300 C318,312 285,315 260,308 Z" fill="#3d3428" stroke="#aaa" stroke-width="1"/>
+              <path id="hl-right" d="M330,298 C348,292 370,298 382,310 C368,318 345,318 332,310 Z" fill="#3d3428" stroke="#888" stroke-width="0.8"/>
+              <ellipse id="hl-beam" cx="300" cy="360" rx="70" ry="36" fill="url(#headGlow)" opacity="0"/>
+            </g>
+
+            <path id="taillight" d="M775,300 C790,305 798,320 792,335 L770,338 C774,318 775,305 775,300 Z" fill="#5a0000"/>
+            <path d="M500,300 C560,285 620,290 660,315 C640,335 580,340 520,330 Z" fill="#0d0d0d" opacity="0.85"/>
+
+            <g id="wheel-front" class="wheel" transform="translate(320 385)">
+              <circle r="48" fill="#0a0a0a"/>
+              <circle r="42" fill="#141414" stroke="#666" stroke-width="3"/>
+              <path d="M-18,-8 A22,22 0 0 1 18,-6" fill="none" stroke="#f5c518" stroke-width="7" stroke-linecap="round"/>
+              <g class="rim-spokes">
+                <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="0.4s" repeatCount="indefinite" class="wheel-spin" begin="indefinite"/>
+                <circle r="26" fill="#1a1a1a" stroke="url(#rimMetal)" stroke-width="2"/>
+                <g stroke="url(#rimMetal)" stroke-width="3.2" stroke-linecap="round">
+                  <line x1="0" y1="-22" x2="0" y2="22"/>
+                  <line x1="-21" y1="-7" x2="21" y2="7"/>
+                  <line x1="-13" y1="18" x2="13" y2="-18"/>
+                  <line x1="21" y1="-7" x2="-21" y2="7"/>
+                  <line x1="13" y1="18" x2="-13" y2="-18"/>
+                </g>
+                <circle r="9" fill="url(#chrome)"/>
+                <circle r="4" fill="#111"/>
+                <circle r="7" fill="#f5c518" opacity="0.9"/>
+                <text x="-3" y="3.5" font-size="8" fill="#111" font-family="Georgia, serif" font-weight="700">f</text>
+              </g>
+            </g>
+
+            <g id="wheel-rear" class="wheel" transform="translate(690 378)">
+              <circle r="52" fill="#0a0a0a"/>
+              <circle r="46" fill="#141414" stroke="#666" stroke-width="3"/>
+              <path d="M-20,-8 A24,24 0 0 1 20,-6" fill="none" stroke="#f5c518" stroke-width="7.5" stroke-linecap="round"/>
+              <g class="rim-spokes">
+                <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="0.38s" repeatCount="indefinite" class="wheel-spin" begin="indefinite"/>
+                <circle r="28" fill="#1a1a1a" stroke="url(#rimMetal)" stroke-width="2"/>
+                <g stroke="url(#rimMetal)" stroke-width="3.4" stroke-linecap="round">
+                  <line x1="0" y1="-24" x2="0" y2="24"/>
+                  <line x1="-23" y1="-8" x2="23" y2="8"/>
+                  <line x1="-14" y1="20" x2="14" y2="-20"/>
+                  <line x1="23" y1="-8" x2="-23" y2="8"/>
+                  <line x1="14" y1="20" x2="-14" y2="-20"/>
+                </g>
+                <circle r="10" fill="url(#chrome)"/>
+                <circle r="4.5" fill="#111"/>
+                <circle r="7.5" fill="#f5c518" opacity="0.9"/>
+                <text x="-3.2" y="3.5" font-size="8.5" fill="#111" font-family="Georgia, serif" font-weight="700">f</text>
+              </g>
+            </g>
+
+            <g id="exhaust" opacity="0.12">
+              <ellipse cx="810" cy="355" rx="22" ry="10" fill="#ff9800" filter="url(#glow)"/>
+              <ellipse cx="820" cy="355" rx="10" ry="5" fill="#ffe082"/>
+            </g>
+
+            <!-- Horn blast rings -->
+            <g id="horn-blast" class="horn-blast" opacity="0">
+              <ellipse cx="280" cy="300" rx="40" ry="18" fill="none" stroke="#f5c518" stroke-width="3"/>
+              <ellipse cx="280" cy="300" rx="70" ry="30" fill="none" stroke="#ff9800" stroke-width="2"/>
+              <ellipse cx="280" cy="300" rx="100" ry="42" fill="none" stroke="#ffe082" stroke-width="1.5"/>
+            </g>
+
+            <!-- A/C airflow -->
+            <g id="climate-fx" class="climate-fx" opacity="0">
+              <path class="ac-flow" d="M430,250 Q450,230 470,250" fill="none" stroke="#9ed7ef" stroke-width="2"/>
+              <path class="ac-flow d2" d="M445,255 Q470,230 495,255" fill="none" stroke="#b8e8ff" stroke-width="1.8"/>
+              <path class="ac-flow d3" d="M460,260 Q490,235 520,260" fill="none" stroke="#7ec8e8" stroke-width="1.5"/>
+              <circle class="ac-dot" cx="440" cy="248" r="2.5" fill="#c8f0ff"/>
+              <circle class="ac-dot d2" cx="470" cy="242" r="2" fill="#a8e4ff"/>
+              <circle class="ac-dot d3" cx="500" cy="250" r="2.2" fill="#d0f4ff"/>
+            </g>
+            <text id="climate-label" x="470" y="278" class="tiny" fill="#9ed7ef" opacity="0.15" letter-spacing="0.2em">A/C</text>
+
+            <!-- Sport mode badge + underglow -->
+            <g id="sport-fx" class="sport-fx" opacity="0">
+              <ellipse cx="500" cy="410" rx="260" ry="14" fill="#e10600" opacity="0.35"/>
+              <rect x="455" y="195" width="90" height="22" rx="3" fill="#1a0505" stroke="#e10600" stroke-width="1.5"/>
+              <text x="468" y="211" fill="#ff4d4d" font-size="12" font-family="Archivo Narrow, sans-serif" letter-spacing="0.18em" font-weight="700">SPORT</text>
+            </g>
+
+            <!-- Lock indicators -->
+            <g id="lock-fx" class="lock-fx" opacity="0">
+              <g transform="translate(370 255)">
+                <rect x="-8" y="0" width="16" height="12" rx="2" fill="#c9a227" stroke="#8a7000"/>
+                <path d="M-5,0 V-6 A5,5 0 0 1 5,-6 V0" fill="none" stroke="#c9a227" stroke-width="2"/>
+              </g>
+              <g transform="translate(600 230)">
+                <rect x="-8" y="0" width="16" height="12" rx="2" fill="#c9a227" stroke="#8a7000"/>
+                <path d="M-5,0 V-6 A5,5 0 0 1 5,-6 V0" fill="none" stroke="#c9a227" stroke-width="2"/>
+              </g>
+              <text x="430" y="450" fill="#c9a227" font-size="11" font-family="JetBrains Mono, monospace" letter-spacing="0.14em">LOCKED</text>
+            </g>
+
+            <!-- Alarm strobes -->
+            <g id="alarm-fx" class="alarm-fx" opacity="0">
+              <ellipse class="alarm-strobe" cx="300" cy="300" rx="90" ry="50" fill="#ff1744" opacity="0.25"/>
+              <ellipse class="alarm-strobe d2" cx="720" cy="310" rx="70" ry="40" fill="#ff1744" opacity="0.2"/>
+              <circle class="alarm-beacon" cx="500" cy="160" r="10" fill="#ff1744"/>
+              <text x="400" y="140" fill="#ff8a80" font-size="12" font-family="JetBrains Mono, monospace" letter-spacing="0.2em">ALARM</text>
+            </g>
+
+            <text x="220" y="430" class="tiny" fill="#8a9096" opacity="0.7">SF90 STRADALE · LAB UNIT</text>
+          </g>
+
+          <g id="board-arduino" transform="translate(40 470)">
+            <rect width="150" height="58" rx="4" fill="#00796b" stroke="#26a69a" stroke-width="1.5"/>
+            <text x="14" y="24" fill="#e0f2f1" font-size="12" font-family="JetBrains Mono, monospace">ARDUINO</text>
+            <text id="arduino-status-text" x="14" y="44" fill="#b2dfdb" font-size="10" font-family="JetBrains Mono, monospace">ONLINE</text>
+            <circle id="arduino-pulse" cx="130" cy="30" r="6" fill="#80cbc4"/>
+          </g>
+          <g id="board-raspberry" transform="translate(770 470)">
+            <rect width="150" height="58" rx="4" fill="#6d2b4e" stroke="#c2185b" stroke-width="1.5"/>
+            <text x="14" y="24" fill="#fce4ec" font-size="12" font-family="JetBrains Mono, monospace">RASPBERRY</text>
+            <text id="raspberry-status-text" x="14" y="44" fill="#f8bbd0" font-size="10" font-family="JetBrains Mono, monospace">ONLINE</text>
+            <circle id="raspberry-pulse" cx="130" cy="30" r="6" fill="#f48fb1"/>
+          </g>
+          <path id="sync-line" d="M190 500 C 400 455, 560 455, 770 500" fill="none" stroke="#d40000" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.65"/>
+          <circle id="sync-dot" r="4" fill="#c9a227">
+            <animateMotion dur="2.4s" repeatCount="indefinite" path="M190 500 C 400 455, 560 455, 770 500"/>
+          </circle>
+        </svg>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <section class="metrics">
+        <article><span>RPM</span><strong id="m-rpm">—</strong></article>
+        <article><span>Velocidade</span><strong id="m-speed">—</strong></article>
+        <article><span>Temp. motor</span><strong id="m-temp">—</strong></article>
+        <article><span>Combustível</span><strong id="m-fuel">—</strong></article>
+      </section>
+
+      <section class="block controls">
+        <div class="block-head">
+          <h2>Comandos</h2>
+          <span class="hint">Atuadores</span>
+        </div>
+        <p class="group-label">Carroceria · Portas</p>
+        <div class="btn-row">
+          <button data-action="door" data-door="driver" data-open="true">Abrir Motorista</button>
+          <button data-action="door" data-door="driver" data-open="false" class="ghost">Fechar Motorista</button>
+          <button data-action="door" data-door="passenger" data-open="true">Abrir Passageiro</button>
+          <button data-action="door" data-door="passenger" data-open="false" class="ghost">Fechar Passageiro</button>
+        </div>
+        <div class="btn-row">
+          <button id="btn-both-doors-open" type="button" class="primary">Abrir Ambas</button>
+          <button id="btn-both-doors-close" type="button" class="ghost">Fechar Ambas</button>
+          <button data-action="roof" data-on="true">Abrir Teto</button>
+          <button data-action="roof" data-on="false" class="ghost">Fechar Teto</button>
+        </div>
+        <p class="group-label">Powertrain</p>
+        <div class="btn-row">
+          <button data-action="engine" data-on="true" class="primary">Ligar Ferrari</button>
+          <button data-action="engine" data-on="false" class="ghost">Desligar</button>
+          <button data-action="sound" data-on="true">Som ON</button>
+          <button data-action="sound" data-on="false" class="ghost">Som OFF</button>
+        </div>
+        <p class="group-label">Iluminação &amp; GPS</p>
+        <div class="btn-row">
+          <button data-action="headlight" data-on="true">Farol ON</button>
+          <button data-action="headlight" data-on="false" class="ghost">Farol OFF</button>
+          <button data-action="track" data-on="true">Rastrear</button>
+          <button data-action="track" data-on="false" class="ghost">Parar GPS</button>
+        </div>
+        <p class="group-label">Dinâmica</p>
+        <div class="btn-row">
+          <button data-action="sport" data-on="true" id="btn-sport-on">Sport ON</button>
+          <button data-action="sport" data-on="false" class="ghost" id="btn-sport-off">Sport OFF</button>
+          <button data-action="spoiler" data-on="true" id="btn-spoiler-on">Aerofólio OUT</button>
+          <button data-action="spoiler" data-on="false" class="ghost" id="btn-spoiler-off">Aerofólio IN</button>
+        </div>
+        <div class="btn-row">
+          <button data-action="climate" data-on="true" id="btn-ac-on">A/C ON</button>
+          <button data-action="climate" data-on="false" class="ghost" id="btn-ac-off">A/C OFF</button>
+          <button data-action="horn" data-on="true" id="btn-horn" class="primary">Buzina</button>
+        </div>
+        <p class="group-label">Segurança</p>
+        <div class="btn-row">
+          <button data-action="lock" data-on="true" class="ghost" id="btn-lock">Travar</button>
+          <button data-action="lock" data-on="false" id="btn-unlock">Destravar</button>
+          <button data-action="alarm" data-on="true" class="warn" id="btn-alarm-on">Armar Alarme</button>
+          <button data-action="alarm" data-on="false" class="ghost" id="btn-alarm-off">Desarmar</button>
+        </div>
+      </section>
+
+      <section class="block scenarios">
+        <div class="block-head">
+          <h2>Cenários</h2>
+          <span class="hint">Sequências</span>
+        </div>
+        <div class="btn-row auto">
+          <button data-scenario="startup">Startup</button>
+          <button data-scenario="track_day">Track Day</button>
+          <button data-scenario="valet">Valet</button>
+          <button data-scenario="secure" class="ghost">Secure</button>
+          <button data-scenario="sync_test">Teste Sync</button>
+        </div>
+      </section>
+
+      <section class="block research">
+        <div class="block-head">
+          <h2>Research Lab</h2>
+          <span class="hint">HIL · QoS · Paper</span>
+        </div>
+        <div class="research-metrics">
+          <article><span>SQI</span><strong id="r-sqi">—</strong></article>
+          <article><span>Lat p50</span><strong id="r-p50">—</strong></article>
+          <article><span>Power</span><strong id="r-power">—</strong></article>
+          <article><span>Twin</span><strong id="r-twin">—</strong></article>
+        </div>
+        <p class="chart-label">Espectro Web Audio</p>
+        <canvas id="spectrum" width="640" height="90" aria-label="Espectro Web Audio"></canvas>
+        <p class="chart-label">HIL latency / drops</p>
+        <canvas id="qos-chart" width="640" height="90" aria-label="QoS HIL latência"></canvas>
+        <div class="hil-box">
+          <label>Delay ms <input id="hil-delay" type="number" min="0" max="2000" value="0" /></label>
+          <label>Loss % <input id="hil-loss" type="number" min="0" max="100" value="0" /></label>
+          <button id="hil-enable" type="button" class="primary">HIL ON</button>
+          <button id="hil-disable" type="button" class="ghost">HIL OFF</button>
+        </div>
+        <div class="stats-stack">
+          <p class="tiny-ui" id="hil-stats">QoS —</p>
+          <p class="tiny-ui" id="energy-stats">Energia —</p>
+          <p class="tiny-ui" id="audit-stats">Audit —</p>
+        </div>
+        <p class="group-label">Experimentos</p>
+        <div class="btn-row auto">
+          <button data-experiment="sync_latency">Sync</button>
+          <button data-experiment="actuator_chain">Atuadores</button>
+          <button data-experiment="tracking_stability">GPS</button>
+          <button data-experiment="fault_injection" class="warn">Falha</button>
+          <button id="btn-paper" type="button">Paper Pack</button>
+        </div>
+        <p class="group-label">Visão</p>
+        <div class="vision-box">
+          <button id="vision-start" type="button">Webcam</button>
+          <button id="vision-stop" type="button" class="ghost">Parar</button>
+          <span class="tiny-ui">Gesto = partida · QR track = GPS</span>
+          <video id="vision-video" playsinline muted></video>
+          <canvas id="vision-canvas"></canvas>
+        </div>
+        <ul id="exp-list"></ul>
+      </section>
+
+      <section class="block logs">
+        <div class="block-head">
+          <h2>Logs</h2>
+          <span class="hint">Eventos</span>
+        </div>
+        <ul id="log-list"></ul>
+      </section>
+    </aside>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+  <script src="/static/audio.js"></script>
+  <script src="/static/vision.js"></script>
+  <script src="/static/script.js"></script>
+</body>
+</html>
