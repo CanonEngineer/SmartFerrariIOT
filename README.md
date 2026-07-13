@@ -1,35 +1,34 @@
+<div align="center">
+
 # SmartFerrariIOT
 
-> Plataforma experimental de **pós-doutorado** para sincronização edge **Arduino ↔ Raspberry Pi**, gêmeo digital formal, HIL/QoS, Web Audio e Research Lab aplicados a um veículo Ferrari (SF90 lab unit).
+**Plataforma experimental de pós-doutorado** · sincronização edge **Arduino ↔ Raspberry Pi** · gêmeo digital formal · HIL/QoS · Web Audio · Research Lab · Ferrari SF90 lab unit
 
-<p align="center">
-  <a href="http://127.0.0.1:8001">
-    <img src="docs/assets/lab-open-button.png" alt="Abrir Ferrari Lab — http://127.0.0.1:8001" width="920"/>
-  </a>
-</p>
+<br/>
 
-<p align="center">
-  <a href="http://127.0.0.1:8001"><img src="https://img.shields.io/badge/OPEN_LAB-127.0.0.1%3A8001-e10600?style=for-the-badge" alt="Open Lab"/></a>
-  <img src="https://img.shields.io/badge/login-admin-1e222b?style=for-the-badge" alt="admin"/>
-  <img src="https://img.shields.io/badge/password-ferrari123-c9a227?style=for-the-badge" alt="ferrari123"/>
-  <img src="https://img.shields.io/badge/Stack-FastAPI%20%7C%20MQTT%20%7C%20WS-2a2e32?style=for-the-badge" alt="Stack"/>
-</p>
+<a href="http://127.0.0.1:8001">
+  <img src="docs/assets/lab-open-button.png" alt="Abrir Ferrari Lab — http://127.0.0.1:8001" width="920"/>
+</a>
+
+<br/>
+
+<a href="http://127.0.0.1:8001"><img src="https://img.shields.io/badge/OPEN_LAB-127.0.0.1%3A8001-e10600?style=for-the-badge" alt="Open Lab"/></a>
+<img src="https://img.shields.io/badge/login-admin-1e222b?style=for-the-badge" alt="admin"/>
+<img src="https://img.shields.io/badge/password-ferrari123-c9a227?style=for-the-badge" alt="ferrari123"/>
+<img src="https://img.shields.io/badge/Stack-FastAPI%20%7C%20MQTT%20%7C%20WS-2a2e32?style=for-the-badge" alt="Stack"/>
 
 ---
 
 ## Interface do Laboratório (análise / defesa)
 
-> [!IMPORTANT]
-> **Clique no botão abaixo** para abrir a interface local usada na análise e na defesa.
+**Clique no botão** para abrir a interface local usada na análise e na defesa.
 
-<p align="center">
-  <a href="http://127.0.0.1:8001">
-    <img src="https://img.shields.io/badge/%F0%9F%9A%97%20Ferrari%20Lab-http%3A%2F%2F127.0.0.1%3A8001-e10600?style=for-the-badge&labelColor=1a0505" alt="Ferrari Lab 8001"/>
-  </a>
-</p>
+<a href="http://127.0.0.1:8001">
+  <img src="https://img.shields.io/badge/Ferrari%20Lab-http%3A%2F%2F127.0.0.1%3A8001-e10600?style=for-the-badge&labelColor=1a0505" alt="Ferrari Lab 8001"/>
+</a>
 
 | | |
-|:--|:--|
+|:---:|:---:|
 | **URL** | **http://127.0.0.1:8001** |
 | **Login** | `admin` |
 | **Senha** | `ferrari123` |
@@ -41,26 +40,24 @@ cd SmartFerrariIOT
 ```
 
 | Recurso | URL |
-|---------|-----|
+|:---:|:---:|
 | **UI Lab** | **http://127.0.0.1:8001** |
 | Health | http://127.0.0.1:8001/health |
 | OpenAPI | http://127.0.0.1:8001/docs |
 | Research overview | http://127.0.0.1:8001/api/research/overview |
 | Paper Pack LaTeX | http://127.0.0.1:8001/api/research/paper-pack.tex |
 
-<p align="center">
-  <img src="docs/assets/ferrari-studio.png" alt="Ferrari SF90 — referência visual do digital twin" width="920"/>
-  <br/>
-  <em>Referência SF90 · o Lab opera o gêmeo digital animável (portas, rodas, Sport, A/C, HIL, áudio).</em>
-</p>
+<img src="docs/assets/ferrari-studio.png" alt="Ferrari SF90 — referência visual do digital twin" width="920"/>
+
+<em>Referência SF90 · o Lab opera o gêmeo digital animável (portas, rodas, Sport, A/C, HIL, áudio).</em>
 
 ---
 
 ## Mapa mental do projeto
 
-<p align="center">
-  <img src="docs/assets/mindmap.png" alt="Mapa mental SmartFerrariIOT" width="920"/>
-</p>
+<img src="docs/assets/mindmap.png" alt="Mapa mental SmartFerrariIOT" width="920"/>
+
+</div>
 
 ```mermaid
 mindmap
@@ -87,13 +84,15 @@ mindmap
       QR track
 ```
 
+<div align="center">
+
 ---
 
 ## Arquitetura em camadas (L1–L5)
 
-<p align="center">
-  <img src="docs/assets/architecture-l1-l5.png" alt="Arquitetura L1 a L5" width="920"/>
-</p>
+<img src="docs/assets/architecture-l1-l5.png" alt="Arquitetura L1 a L5" width="920"/>
+
+</div>
 
 ```mermaid
 flowchart TB
@@ -133,15 +132,17 @@ flowchart TB
   VIS --> API
 ```
 
-Documentação: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · [`docs/PROTOCOL.md`](docs/PROTOCOL.md) · [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)
+<div align="center">
+
+**Documentação:** [ARCHITECTURE](docs/ARCHITECTURE.md) · [PROTOCOL](docs/PROTOCOL.md) · [METHODOLOGY](docs/METHODOLOGY.md)
 
 ---
 
 ## Gêmeo digital formal (UML / Statechart)
 
-<p align="center">
-  <img src="docs/assets/twin-statechart.png" alt="Statechart e invariantes" width="920"/>
-</p>
+<img src="docs/assets/twin-statechart.png" alt="Statechart e invariantes" width="920"/>
+
+</div>
 
 ```mermaid
 stateDiagram-v2
@@ -155,8 +156,10 @@ stateDiagram-v2
   READY --> SECURE: alarm ARM
 ```
 
+<div align="center">
+
 | ID | Regra |
-|----|--------|
+|:---:|:---:|
 | INV-01 | Não abrir porta se Sport ∧ velocidade > 0 |
 | INV-02 | Não ligar motor com alarme armado |
 | INV-03 | Sport requer motor ON |
@@ -164,15 +167,15 @@ stateDiagram-v2
 | INV-05 | Travar ⇒ fechar portas |
 | INV-06 | Não armar alarme com motor ligado |
 
-Violação → **HTTP 409** ou evento WS `invariant_violation`.
+Violação → **HTTP 409** ou evento WS `invariant_violation`
 
 ---
 
 ## Fluxo de comando (HIL + Twin + Audit)
 
-<p align="center">
-  <img src="docs/assets/sequence-command.png" alt="Sequência de comando" width="920"/>
-</p>
+<img src="docs/assets/sequence-command.png" alt="Sequência de comando" width="920"/>
+
+</div>
 
 ```mermaid
 sequenceDiagram
@@ -196,9 +199,9 @@ sequenceDiagram
   end
 ```
 
-<p align="center">
-  <img src="docs/assets/hil-qos.png" alt="HIL QoS" width="920"/>
-</p>
+<div align="center">
+
+<img src="docs/assets/hil-qos.png" alt="HIL QoS" width="920"/>
 
 ---
 
@@ -217,11 +220,11 @@ $$
 \Delta fuel \approx -\alpha\cdot P_{motor}\cdot \Delta t_h
 $$
 
-Constantes de bancada em `python_server/energy.py` (ex.: \(C_{bat}\approx 720\,Wh\)).
+Constantes de bancada em `python_server/energy.py` · \(C_{bat}\approx 720\,Wh\)
 
 ---
 
-## Research Lab — o que demonstrar na banca
+## Research Lab — demonstração na banca
 
 1. **Áudio real** — motor (ronco + rodas), buzina, alarme + espectro  
 2. **Invariantes** — armar alarme → tentar motor → `INV-02`  
@@ -240,7 +243,7 @@ SmartFerrariIOT/
 ├── python_server/
 ├── arduino/
 ├── raspberry/
-├── docs/assets/          # figuras PNG do README
+├── docs/assets/
 ├── experiments/exports/
 └── tests/
 ```
@@ -250,7 +253,7 @@ SmartFerrariIOT/
 ## API rápida
 
 | Método | Endpoint | Função |
-|--------|----------|--------|
+|:---:|:---:|:---:|
 | POST | `/api/auth/login` | Token |
 | GET | `/api/status` | Snapshot |
 | POST | `/api/door\|engine\|alarm\|…` | Atuadores |
@@ -261,10 +264,10 @@ SmartFerrariIOT/
 
 ---
 
-<p align="center">
-  <a href="http://127.0.0.1:8001">
-    <img src="docs/assets/lab-open-button.png" alt="Ferrari Lab http://127.0.0.1:8001" width="720"/>
-  </a>
-  <br/>
-  <strong><a href="http://127.0.0.1:8001">http://127.0.0.1:8001</a></strong>
-</p>
+<a href="http://127.0.0.1:8001">
+  <img src="docs/assets/lab-open-button.png" alt="Ferrari Lab http://127.0.0.1:8001" width="720"/>
+</a>
+
+### [http://127.0.0.1:8001](http://127.0.0.1:8001)
+
+</div>
