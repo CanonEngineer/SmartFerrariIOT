@@ -57,6 +57,7 @@ def make_lab_button():
     d.text((680, 208), "admin", fill=GOLD, font=font(20, True))
     rounded(d, (840, 200, 1080, 236), PANEL, 10, outline=LINE)
     d.text((860, 208), "ferrari123", fill=GOLD, font=font(20, True))
+    d.text((70, 245), "Clique no badge acima no README  ·  Porta 8001  ·  Análise / Defesa", fill=MUTED, font=font(16))
     save(img, "lab-open-button.png")
 
 
