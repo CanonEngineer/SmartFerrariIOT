@@ -39,7 +39,7 @@ def save(img: Image.Image, name: str):
 
 
 def make_lab_button():
-    w, h = 1200, 280
+    w, h = 1200, 250
     img = Image.new("RGB", (w, h), BG)
     d = ImageDraw.Draw(img)
     # outer card
@@ -49,14 +49,16 @@ def make_lab_button():
     d.text((70, 48), "INTERFACE DO LABORATÓRIO", fill=MUTED, font=font(22, True))
     d.text((70, 95), "Ferrari Lab", fill=INK, font=font(54, True))
     # URL pill as button
-    rounded(d, (70, 170, 620, 230), (42, 12, 12), 14, outline=(255, 77, 77), width=2)
-    d.text((95, 185), "http://127.0.0.1:8001", fill=(255, 180, 180), font=font(28, True))
+    rounded(d, (70, 165, 620, 220), (42, 12, 12), 14, outline=(255, 77, 77), width=2)
+    d.text((95, 178), "http://127.0.0.1:8001", fill=(255, 180, 180), font=font(28, True))
     # credentials
-    d.text((660, 175), "Login", fill=MUTED, font=font(18))
-    rounded(d, (660, 200, 820, 236), PANEL, 10, outline=LINE)
-    d.text((680, 208), "admin", fill=GOLD, font=font(20, True))
-    rounded(d, (840, 200, 1080, 236), PANEL, 10, outline=LINE)
-    d.text((860, 208), "ferrari123", fill=GOLD, font=font(20, True))
+    d.text((660, 165), "Login", fill=MUTED, font=font(18))
+    rounded(d, (660, 188, 820, 224), PANEL, 10, outline=LINE)
+    d.text((680, 196), "admin", fill=GOLD, font=font(20, True))
+    rounded(d, (840, 188, 1080, 224), PANEL, 10, outline=LINE)
+    d.text((860, 196), "ferrari123", fill=GOLD, font=font(20, True))
+    # novo nome = quebra cache do GitHub Camo
+    save(img, "lab-cta.png")
     save(img, "lab-open-button.png")
 
 

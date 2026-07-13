@@ -7,7 +7,7 @@
 <br/>
 
 <a href="http://127.0.0.1:8001">
-  <img src="docs/assets/lab-open-button.png" alt="Abrir Ferrari Lab — http://127.0.0.1:8001" width="920"/>
+  <img src="docs/assets/lab-cta.png" alt="Abrir Ferrari Lab — http://127.0.0.1:8001" width="920"/>
 </a>
 
 <br/>
@@ -265,7 +265,7 @@ SmartFerrariIOT/
 ---
 
 <a href="http://127.0.0.1:8001">
-  <img src="docs/assets/lab-open-button.png" alt="Ferrari Lab http://127.0.0.1:8001" width="720"/>
+  <img src="docs/assets/lab-cta.png" alt="Ferrari Lab http://127.0.0.1:8001" width="720"/>
 </a>
 
 ### [http://127.0.0.1:8001](http://127.0.0.1:8001)
