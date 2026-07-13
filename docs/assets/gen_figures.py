@@ -57,7 +57,6 @@ def make_lab_button():
     d.text((680, 208), "admin", fill=GOLD, font=font(20, True))
     rounded(d, (840, 200, 1080, 236), PANEL, 10, outline=LINE)
     d.text((860, 208), "ferrari123", fill=GOLD, font=font(20, True))
-    d.text((70, 245), "Clique no badge acima no README  ·  Porta 8001  ·  Análise / Defesa", fill=MUTED, font=font(16))
     save(img, "lab-open-button.png")
 
 
@@ -65,7 +64,7 @@ def make_mindmap():
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
     d.text((60, 40), "Mapa mental — SmartFerrariIOT", fill=INK, font=font(36, True))
-    d.text((60, 90), "Tree of Knowledge · pós-doutorado · edge sync", fill=MUTED, font=font(20))
+    d.text((60, 90), "Tree of Knowledge · pós em Engenharia da Computação · edge sync", fill=MUTED, font=font(20))
 
     cx, cy, r = W // 2, H // 2 + 20, 110
     d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(42, 18, 18), outline=ROSSO, width=4)

@@ -1,4 +1,4 @@
-# Metodologia Experimental (Pós-doutorado)
+# Metodologia Experimental (Pós em Engenharia da Computação)
 
 ## Perguntas
 

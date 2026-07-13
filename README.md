@@ -2,7 +2,7 @@
 
 # SmartFerrariIOT
 
-**Plataforma experimental de pós-doutorado** · sincronização edge **Arduino ↔ Raspberry Pi** · gêmeo digital formal · HIL/QoS · Web Audio · Research Lab · Ferrari SF90 lab unit
+**Plataforma experimental de pós em Engenharia da Computação** · sincronização edge **Arduino ↔ Raspberry Pi** · gêmeo digital formal · HIL/QoS · Web Audio · Research Lab · Ferrari SF90 lab unit
 
 <br/>
 
