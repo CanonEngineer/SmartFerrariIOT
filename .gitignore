@@ -1,0 +1,15 @@
+.venv/
+**/__pycache__/
+*.pyc
+*.pyo
+database/*.db
+*.db
+experiments/exports/*
+!experiments/exports/.gitkeep
+.env
+.idea/
+.vscode/
+__pycache__/
+*.log
+.DS_Store
+Thumbs.db
