@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ferrari IoT — Launch Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0b; --ink: #f2efe9; --muted: #8a8580; --accent: #e10600; --gold: #f5c518;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--ink); font-family: "JetBrains Mono", monospace;
+      background:
+        radial-gradient(900px 420px at 12% -10%, #3a0808, transparent 55%),
+        radial-gradient(700px 360px at 90% 0%, #2a2208, transparent 50%),
+        #0a0a0b;
+      display: grid; place-items: center; padding: 2rem;
+    }
+    .card {
+      width: min(720px, 100%);
+      border: 1px solid #3a1212; border-radius: 4px; padding: 2rem;
+      background: rgba(18, 12, 12, 0.94);
+      border-left: 4px solid var(--accent);
+    }
+    h1 {
+      font-family: "Archivo Narrow", sans-serif; margin: 0 0 0.4rem;
+      font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    p { color: var(--muted); line-height: 1.5; }
+    .cta {
+      display: inline-block; margin-top: 1.2rem; text-decoration: none; color: #fff;
+      background: linear-gradient(90deg, var(--accent), #8a0000);
+      font-family: "Archivo Narrow", sans-serif; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 0.95rem 1.4rem; border-radius: 2px; font-size: 1.05rem;
+      box-shadow: 0 10px 30px rgba(225, 6, 0, 0.28);
+    }
+    .cta:hover { filter: brightness(1.08); }
+    .meta { margin-top: 1.4rem; font-size: 0.78rem; color: var(--muted); }
+    a.secondary { color: var(--gold); }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Ferrari Lab</h1>
+    <p>
+      Gêmeo digital SF90 · sync Arduino ↔ Raspberry · HIL/QoS · Web Audio · Research Lab
+      para pós em Engenharia da Computação.
+    </p>
+    <a class="cta" href="./demo/standalone.html?v=2026-07-14">▶ Abrir Interface Gráfica</a>
+    <p class="meta">
+      Demo no browser (GitHub Pages). Para backend completo + telemetria:
+      clone o repositório e execute <code>start.ps1</code> ·
+      <a class="secondary" href="https://github.com/CanonEngineer/SmartFerrariIOT">código-fonte</a>
+    </p>
+  </main>
+</body>
+</html>

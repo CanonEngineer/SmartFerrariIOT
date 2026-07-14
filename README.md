@@ -6,26 +6,53 @@
 
 <br/>
 
-<a href="http://127.0.0.1:8001">
-  <img src="docs/assets/lab-cta.png" alt="Abrir Ferrari Lab — http://127.0.0.1:8001" width="920"/>
+<a href="https://canonengineer.github.io/SmartFerrariIOT/demo/standalone.html?v=2026-07-14">
+  <img src="docs/assets/lab-cta.png" alt="Abrir Ferrari Lab — GitHub Pages Demo" width="920"/>
 </a>
 
 <br/>
 
-<a href="http://127.0.0.1:8001"><img src="https://img.shields.io/badge/OPEN_LAB-127.0.0.1%3A8001-e10600?style=for-the-badge" alt="Open Lab"/></a>
-<img src="https://img.shields.io/badge/login-admin-1e222b?style=for-the-badge" alt="admin"/>
-<img src="https://img.shields.io/badge/password-ferrari123-c9a227?style=for-the-badge" alt="ferrari123"/>
+<a href="https://canonengineer.github.io/SmartFerrariIOT/demo/standalone.html?v=2026-07-14">
+  <img src="https://img.shields.io/badge/%E2%96%B6%20Abrir%20Interface%20Gráfica%20AGORA-e10600?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Abrir Interface Gráfica"/>
+</a>
+&nbsp;
+<a href="https://github.com/CanonEngineer/SmartFerrariIOT/blob/main/docs/demo/standalone.html">
+  <img src="https://img.shields.io/badge/Arquivo%20standalone-1a0505?style=for-the-badge&logo=github&logoColor=e10600" alt="Arquivo standalone"/>
+</a>
+&nbsp;
 <img src="https://img.shields.io/badge/Stack-FastAPI%20%7C%20MQTT%20%7C%20WS-2a2e32?style=for-the-badge" alt="Stack"/>
+
+> **▶ Abrir Interface Gráfica AGORA** abre o Demo Lab publicado em GitHub Pages (`/demo/standalone.html`).<br/>
+> Após um `push` em `main`, o workflow atualiza o site em ~1–2 min — use Ctrl+F5 se o navegador cachear.<br/>
+> Laboratório completo local: `start.ps1` → `http://127.0.0.1:8001` · login `admin` / `ferrari123`.
 
 ---
 
 ## Interface do Laboratório (análise / defesa)
 
-**Clique no botão** para abrir a interface local usada na análise e na defesa.
+### Opção A — Botão online (Demo Lab)
 
-<a href="http://127.0.0.1:8001">
-  <img src="https://img.shields.io/badge/Ferrari%20Lab-http%3A%2F%2F127.0.0.1%3A8001-e10600?style=for-the-badge&labelColor=1a0505" alt="Ferrari Lab 8001"/>
-</a>
+**Clique no botão** para abrir a interface no celular ou em qualquer navegador (sem instalar nada).
+
+<p align="center">
+  <a href="https://canonengineer.github.io/SmartFerrariIOT/demo/standalone.html?v=2026-07-14">
+    <img src="https://img.shields.io/badge/%E2%96%B6%20ABRIR%20FERRARI%20LAB%20AGORA-e10600?style=for-the-badge&labelColor=1a0505" alt="Abrir Ferrari Lab" height="48" />
+  </a>
+</p>
+
+- **Demo Lab:** [Abrir standalone](https://canonengineer.github.io/SmartFerrariIOT/demo/standalone.html?v=2026-07-14)
+- **Mesma interface via pasta demo:** https://canonengineer.github.io/SmartFerrariIOT/demo/
+
+Para ativar Pages no repositório (remove o X vermelho e publica o site):
+
+1. Abra [Settings → Pages](https://github.com/CanonEngineer/SmartFerrariIOT/settings/pages)
+2. **Source** = **Deploy from a branch**
+3. Branch = `gh-pages` · Folder = `/ (root)` · **Save**
+4. Aguarde 1–2 minutos e teste: https://canonengineer.github.io/SmartFerrariIOT/demo/
+
+Guia: [`docs/PAGES_SETUP.md`](./docs/PAGES_SETUP.md)
+
+### Opção B — Laboratório completo (local)
 
 | | |
 |:---:|:---:|
@@ -35,6 +62,7 @@
 | **Porta** | `8001` (SmartHomeIOT = `8000`) |
 
 ```powershell
+git clone https://github.com/CanonEngineer/SmartFerrariIOT.git
 cd SmartFerrariIOT
 .\start.ps1
 ```
@@ -243,7 +271,11 @@ SmartFerrariIOT/
 ├── python_server/
 ├── arduino/
 ├── raspberry/
-├── docs/assets/
+├── docs/
+│   ├── index.html           # Launch lab (GitHub Pages)
+│   ├── demo/                # Interface gráfica (standalone)
+│   └── assets/
+├── .github/workflows/
 ├── experiments/exports/
 └── tests/
 ```
@@ -264,10 +296,10 @@ SmartFerrariIOT/
 
 ---
 
-<a href="http://127.0.0.1:8001">
-  <img src="docs/assets/lab-cta.png" alt="Ferrari Lab http://127.0.0.1:8001" width="720"/>
+<a href="https://canonengineer.github.io/SmartFerrariIOT/demo/standalone.html?v=2026-07-14">
+  <img src="docs/assets/lab-cta.png" alt="Ferrari Lab — Demo GitHub Pages" width="720"/>
 </a>
 
-### [http://127.0.0.1:8001](http://127.0.0.1:8001)
+### [▶ Abrir Ferrari Lab](https://canonengineer.github.io/SmartFerrariIOT/demo/standalone.html?v=2026-07-14)
 
 </div>

@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ferrari IoT — Demo Lab (GitHub Pages)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@600;700&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+:root {
+  --bg-0: #0c0d0f;
+  --bg-1: #12141a;
+  --bg-2: #181b22;
+  --bg-3: #1e222b;
+  --ink: #f4f1ec;
+  --ink-soft: #c8c4bc;
+  --muted: #8b8680;
+  --line: rgba(244, 241, 236, 0.08);
+  --line-strong: rgba(244, 241, 236, 0.14);
+  --rosso: #d40000;
+  --rosso-deep: #8a0000;
+  --gold: #c9a227;
+  --ok: #3d9a6a;
+  --warn: #c47a3a;
+  --danger: #c44a3a;
+  --radius: 4px;
+  --radius-lg: 10px;
+  --font-display: "Archivo Narrow", "Archivo", sans-serif;
+  --font-ui: "Archivo", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pad: 1.25rem;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.45;
+  background:
+    linear-gradient(105deg, rgba(212, 0, 0, 0.07) 0%, transparent 38%),
+    linear-gradient(180deg, #14161c 0%, var(--bg-0) 42%, #0a0b0e 100%);
+  background-attachment: fixed;
+}
+
+.noise {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.topbar, .layout { position: relative; z-index: 1; }
+
+/* ——— Header ——— */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem var(--pad);
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(18, 20, 26, 0.92), rgba(12, 13, 15, 0.75));
+  backdrop-filter: blur(10px);
+  animation: rise 0.7s var(--ease) both;
+}
+.brand { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+.brand-mark {
+  width: 5px;
+  height: 44px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--rosso) 0%, var(--rosso-deep) 100%);
+}
+.brand h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.55rem, 2.4vw, 2rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.brand p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.top-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 0.32rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: rgba(255, 255, 255, 0.02);
+}
+.status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--muted);
+}
+.status.offline { color: #e8a090; border-color: rgba(196, 74, 58, 0.35); }
+.status.offline::before { background: var(--danger); }
+.status.online { color: #9ed4b5; border-color: rgba(61, 154, 106, 0.4); }
+.status.online::before { background: var(--ok); }
+.status.sync { color: #e4d4a0; border-color: rgba(201, 162, 39, 0.35); }
+.status.sync::before { background: var(--gold); }
+.event {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ——— Layout ——— */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr);
+  gap: 1rem;
+  padding: 1rem var(--pad) 1.5rem;
+  min-height: calc(100vh - 78px);
+  animation: rise 0.85s var(--ease) 0.08s both;
+}
+
+.stage {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse 80% 50% at 30% 40%, rgba(212, 0, 0, 0.08), transparent 60%),
+    linear-gradient(165deg, #1a1d24, #0e1014 70%);
+  display: flex;
+  flex-direction: column;
+  min-height: 540px;
+}
+.stage-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.stage-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.stage-head span {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.stage-grid {
+  flex: 1;
+  min-height: 0;
+  background: transparent;
+}
+#ferrari-svg { width: 100%; height: 100%; display: block; min-height: 480px; }
+.room-label {
+  fill: #6a7076;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.18em;
+}
+.tiny { fill: #7a756e; font-size: 10px; font-family: var(--font-mono); }
+
+/* Butterfly doors + actuators */
+.door-panel {
+  transform-origin: 8px 50px;
+  transition: transform 0.95s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+.door-panel.open {
+  transform: rotate(-68deg) translate(-12px, -42px);
+}
+.door-panel.passenger {
+  transform-origin: 10px 40px;
+}
+.door-panel.passenger.open {
+  transform: rotate(64deg) translate(18px, -48px);
+}
+.roof-panel {
+  transform-origin: 520px 170px;
+  transition: transform 0.9s var(--ease), opacity 0.55s;
+}
+.roof-panel.open {
+  transform: translateY(-48px) rotate(-8deg) scale(0.9);
+  opacity: 0.2;
+}
+.spoiler {
+  transform: translate(730px, 258px) scaleY(0.85);
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0.85;
+}
+.spoiler.out {
+  transform: translate(730px, 205px) scaleY(1);
+}
+.spoiler.out .spoiler-tag { opacity: 1; }
+.wheel .rim-spokes {
+  transform-origin: 0px 0px;
+  transform-box: view-box;
+}
+#car.engine-on .wheel .rim-spokes {
+  animation: spin 0.4s linear infinite;
+}
+#car.engine-on #body { filter: brightness(1.06) saturate(1.06) url(#softShadow); }
+#car.engine-on #exhaust { opacity: 0.85 !important; }
+
+/* Sport — sem piscar; badge + underglow estável */
+#car.sport-on #body { filter: brightness(1.1) saturate(1.2); }
+.sport-fx { transition: opacity 0.35s ease; pointer-events: none; }
+#car.sport-on .sport-fx { opacity: 1; }
+
+/* A/C */
+.climate-fx { transition: opacity 0.35s ease; }
+#car.climate-on .climate-fx { opacity: 1; }
+#car.climate-on .ac-flow {
+  stroke-dasharray: 8 6;
+  animation: acWave 1.1s ease-in-out infinite;
+}
+#car.climate-on .ac-flow.d2 { animation-delay: 0.15s; }
+#car.climate-on .ac-flow.d3 { animation-delay: 0.3s; }
+#car.climate-on .ac-dot { animation: acFloat 1.4s ease-in-out infinite; }
+#car.climate-on .ac-dot.d2 { animation-delay: 0.2s; }
+#car.climate-on .ac-dot.d3 { animation-delay: 0.4s; }
+
+/* Horn */
+.horn-blast { transition: opacity 0.1s; }
+#car.horn-blast .horn-blast,
+.horn-blast.active {
+  opacity: 1;
+  animation: hornRing 0.55s ease-out;
+}
+#car.horn-blast .horn-blast ellipse:nth-child(2) { animation-delay: 0.05s; }
+#car.horn-blast .horn-blast ellipse:nth-child(3) { animation-delay: 0.1s; }
+
+/* Lock */
+.lock-fx { transition: opacity 0.35s ease, transform 0.45s var(--ease); }
+#car.locked .lock-fx { opacity: 1; }
+#car.locked .door-panel { filter: brightness(0.85); }
+
+/* Alarm — indicador estático (sem strobe/pisca) */
+.alarm-fx { transition: opacity 0.25s ease; }
+#car.alarm-on .alarm-fx { opacity: 1; }
+#car.alarm-on .alarm-strobe { opacity: 0.12; }
+#car.alarm-on .alarm-beacon { opacity: 0.85; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes acWave {
+  0%, 100% { opacity: 0.35; stroke-dashoffset: 0; }
+  50% { opacity: 1; stroke-dashoffset: -12; }
+}
+@keyframes acFloat {
+  0% { transform: translate(0, 0); opacity: 0.3; }
+  50% { transform: translate(12px, -14px); opacity: 1; }
+  100% { transform: translate(24px, -8px); opacity: 0.2; }
+}
+@keyframes hornRing {
+  0% { opacity: 0.95; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+@keyframes tagPulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+button.active-on {
+  border-color: rgba(225, 6, 0, 0.7);
+  background: #2a1212;
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(225, 6, 0, 0.35);
+}
+
+/* ——— Side panel ——— */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 0;
+  max-height: calc(100vh - 96px);
+  overflow: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-3) transparent;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+.metrics article,
+.research-metrics article {
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, var(--bg-2), var(--bg-1));
+  transition: border-color 0.2s ease;
+}
+.metrics article:hover,
+.research-metrics article:hover {
+  border-color: rgba(212, 0, 0, 0.35);
+}
+.metrics span,
+.research-metrics span {
+  display: block;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.metrics strong,
+.research-metrics strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.block {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(24, 27, 34, 0.85);
+  padding: 0.9rem 1rem 1rem;
+}
+.block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--line);
+}
+.block-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.block-head .hint {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.group-label {
+  margin: 0.55rem 0 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.85;
+}
+.group-label:first-of-type { margin-top: 0; }
+
+.btn-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin-bottom: 0.35rem;
+}
+.btn-row.quad { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.btn-row.auto { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+
+button {
+  appearance: none;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-3);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 0.55rem 0.6rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.15s var(--ease);
+}
+button:hover {
+  border-color: rgba(212, 0, 0, 0.55);
+  background: #261818;
+  color: #fff;
+}
+button:active { transform: translateY(1px); }
+button.primary {
+  background: linear-gradient(180deg, #e01010, var(--rosso-deep));
+  border-color: #ff4a4a;
+  color: #fff;
+  font-weight: 600;
+}
+button.primary:hover { filter: brightness(1.08); border-color: #ff6b6b; }
+button.ghost {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--line);
+}
+button.ghost:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.03);
+}
+button.warn {
+  border-color: rgba(196, 122, 58, 0.45);
+  color: #e8c4a0;
+  background: rgba(196, 122, 58, 0.08);
+}
+button.warn:hover { border-color: var(--warn); color: #fff; }
+
+.research-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+}
+
+.chart-label {
+  margin: 0.35rem 0 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+#spectrum,
+#qos-chart {
+  width: 100%;
+  height: 78px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #08090b;
+  margin-bottom: 0.45rem;
+  display: block;
+}
+
+.hil-box,
+.vision-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  margin: 0.5rem 0 0.35rem;
+}
+.hil-box label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  letter-spacing: 0.04em;
+}
+.hil-box input {
+  width: 68px;
+  background: var(--bg-0);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+.hil-box input:focus {
+  outline: none;
+  border-color: rgba(212, 0, 0, 0.5);
+}
+
+.stats-stack {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0.35rem 0 0.55rem;
+}
+.tiny-ui {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+#vision-video,
+#vision-canvas {
+  width: 132px;
+  height: 99px;
+  background: #000;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  object-fit: cover;
+}
+
+#log-list,
+#exp-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  max-height: 130px;
+}
+#log-list li,
+#exp-list li {
+  border-top: 1px solid var(--line);
+  padding: 0.4rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+#log-list li:first-child,
+#exp-list li:first-child { border-top: none; }
+#log-list li strong,
+#exp-list li strong { color: var(--gold); font-weight: 500; }
+#exp-list a {
+  color: #e8a0a0;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(212, 0, 0, 0.35);
+}
+#exp-list a:hover { color: #fff; }
+
+.board-flash { animation: flash 0.45s ease; }
+@keyframes flash { 40% { filter: brightness(1.4); } }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1080px) {
+  .btn-row.quad { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .panel {
+    max-height: none;
+    overflow: visible;
+  }
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .stage { min-height: 420px; }
+  #ferrari-svg { min-height: 380px; }
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="noise"></div>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <h1>Ferrari IoT Lab</h1>
+        <p>Demo Lab (GitHub Pages) · Arduino ↔ Raspberry · sem backend</p>
+      </div>
+    </div>
+    <div class="top-meta">
+      <span id="sqi-status" class="status sync">SQI —</span>
+      <span id="ws-status" class="status offline">WS offline</span>
+      <span id="sync-status" class="status sync">SYNC —</span>
+      <span id="last-event" class="event">Iniciando…</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage">
+      <div class="stage-head">
+        <h2>Digital Twin</h2>
+        <span>SF90 · animações · edge sync</span>
+      </div>
+      <div class="stage-grid">
+        <svg id="ferrari-svg" viewBox="0 0 960 560" role="img" aria-label="Ferrari SF90 digital twin">
+          <defs>
+            <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#d8dce0"/>
+              <stop offset="55%" stop-color="#c4c8cd"/>
+              <stop offset="100%" stop-color="#aeb3b9"/>
+            </linearGradient>
+            <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a3d42"/>
+              <stop offset="40%" stop-color="#23262b"/>
+              <stop offset="100%" stop-color="#121417"/>
+            </linearGradient>
+            <linearGradient id="rossoBody" x1="0" y1="0" x2="0.35" y2="1">
+              <stop offset="0%" stop-color="#ff3b2f"/>
+              <stop offset="28%" stop-color="#e10600"/>
+              <stop offset="62%" stop-color="#b00000"/>
+              <stop offset="100%" stop-color="#5c0000"/>
+            </linearGradient>
+            <linearGradient id="rossoHi" x1="0" y1="0" x2="1" y2="0.3">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+              <stop offset="35%" stop-color="#ff8a80" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="glassGrad" x1="0" y1="0" x2="0.2" y2="1">
+              <stop offset="0%" stop-color="#e8f4ff" stop-opacity="0.55"/>
+              <stop offset="50%" stop-color="#6a9bb0" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#1a2a33" stop-opacity="0.65"/>
+            </linearGradient>
+            <linearGradient id="carbon" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2c2c2c"/>
+              <stop offset="50%" stop-color="#111"/>
+              <stop offset="100%" stop-color="#3a3a3a"/>
+            </linearGradient>
+            <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f0f0f0"/>
+              <stop offset="45%" stop-color="#8a8a8a"/>
+              <stop offset="100%" stop-color="#e8e8e8"/>
+            </linearGradient>
+            <linearGradient id="rimMetal" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d0d0d0"/>
+              <stop offset="50%" stop-color="#555"/>
+              <stop offset="100%" stop-color="#b8b8b8"/>
+            </linearGradient>
+            <pattern id="honey" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+              <rect width="8" height="8" fill="#0a0a0a"/>
+              <path d="M0 4h8M4 0v8" stroke="#2a2a2a" stroke-width="0.8"/>
+            </pattern>
+            <radialGradient id="headGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff8e1"/>
+              <stop offset="45%" stop-color="#ffe082"/>
+              <stop offset="100%" stop-color="#ff9800" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="softShadow" x="-25%" y="-15%" width="150%" height="140%">
+              <feDropShadow dx="0" dy="18" stdDeviation="14" flood-color="#000" flood-opacity="0.55"/>
+            </filter>
+            <clipPath id="bodyClip">
+              <path d="M210,310 C230,210 310,155 420,145 C520,136 620,155 700,200 C760,235 800,285 815,330 C820,350 810,365 785,372 L240,385 C215,380 205,350 210,310 Z"/>
+            </clipPath>
+          </defs>
+
+          <rect x="0" y="0" width="960" height="560" fill="url(#wallGrad)"/>
+          <g stroke="#9aa0a6" stroke-width="1" opacity="0.55">
+            <line x1="0" y1="72" x2="960" y2="72"/>
+            <line x1="0" y1="148" x2="960" y2="148"/>
+            <line x1="0" y1="224" x2="960" y2="224"/>
+            <line x1="0" y1="300" x2="960" y2="300"/>
+            <line x1="180" y1="0" x2="180" y2="330"/>
+            <line x1="480" y1="0" x2="480" y2="330"/>
+            <line x1="780" y1="0" x2="780" y2="330"/>
+          </g>
+          <rect x="0" y="330" width="960" height="230" fill="url(#floorGrad)"/>
+          <ellipse cx="500" cy="430" rx="310" ry="28" fill="#000" opacity="0.35"/>
+          <text x="36" y="42" class="room-label" fill="#6a7076">ATELIER · DIGITAL TWIN</text>
+
+          <g transform="translate(780 70)">
+            <ellipse id="track-ring" cx="70" cy="55" rx="62" ry="32" fill="none" stroke="#8a9098" stroke-width="10" opacity="0.35"/>
+            <ellipse cx="70" cy="55" rx="62" ry="32" fill="none" stroke="#5a6068" stroke-width="1.5" stroke-dasharray="6 8"/>
+            <circle id="gps-dot" cx="132" cy="55" r="6" fill="#c9a227" opacity="0.2"/>
+            <text x="28" y="12" class="tiny" fill="#6a7076">GPS TRACK</text>
+          </g>
+
+          <g id="car">
+            <path d="M620,250 C680,245 740,270 770,310 C790,340 800,360 790,375 L640,385 C630,320 640,270 620,250 Z" fill="#8a0500" opacity="0.95"/>
+
+            <path id="body" d="M210,310
+              C225,235 280,175 360,155
+              C430,138 520,140 600,165
+              C670,188 730,230 770,285
+              C790,315 800,345 795,365
+              C790,378 770,385 740,388
+              L250,395
+              C220,390 205,355 210,310 Z"
+              fill="url(#rossoBody)" stroke="#ff6b63" stroke-width="1" filter="url(#softShadow)"/>
+
+            <g clip-path="url(#bodyClip)">
+              <path d="M250,220 C360,170 500,165 650,210" fill="none" stroke="url(#rossoHi)" stroke-width="28" stroke-linecap="round"/>
+              <path d="M240,300 C380,280 560,275 720,310" fill="none" stroke="#000" stroke-width="22" opacity="0.12" stroke-linecap="round"/>
+              <path d="M260,340 C420,355 600,350 740,335" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>
+            </g>
+
+            <path d="M205,330 C230,318 280,310 330,312 L340,348 C290,352 240,355 210,348 Z" fill="#111"/>
+            <path d="M240,345 L300,338 L305,358 L245,362 Z" fill="url(#honey)" stroke="#222" stroke-width="0.8"/>
+            <path d="M310,336 L355,332 L358,352 L314,355 Z" fill="url(#honey)" stroke="#222" stroke-width="0.8"/>
+            <path d="M360,210 L420,200" stroke="#6a0000" stroke-width="4" opacity="0.45" stroke-linecap="round"/>
+            <path d="M370,222 L430,212" stroke="#6a0000" stroke-width="3.5" opacity="0.4" stroke-linecap="round"/>
+
+            <path d="M380,195 C440,155 540,148 620,175 L600,235 C530,210 450,212 400,235 Z" fill="url(#glassGrad)" stroke="#b8dceb" stroke-width="0.9"/>
+            <path d="M400,205 C470,175 550,172 600,190" fill="none" stroke="#fff" stroke-width="2" opacity="0.28"/>
+
+            <g id="roof-group">
+              <path id="roof-panel" class="roof-panel"
+                d="M420,175 C480,145 560,145 620,168 L605,200 C550,180 480,178 435,195 Z"
+                fill="url(#carbon)" stroke="#555" stroke-width="1"/>
+              <path class="roof-panel" d="M440,182 C500,160 560,160 600,175" fill="none" stroke="#888" stroke-width="1" opacity="0.35"/>
+            </g>
+
+            <path d="M620,185 C650,200 670,230 675,265 L640,275 C635,240 625,210 605,195 Z" fill="url(#glassGrad)" opacity="0.75"/>
+
+            <g id="door-driver-group" transform="translate(340 200)">
+              <g id="door-driver" class="door-panel">
+                <path d="M0,40 C15,10 55,0 95,15 L110,95 C70,115 25,120 5,100 Z" fill="#c40000" stroke="#ff8a80" stroke-width="1.2"/>
+                <path d="M18,45 C45,28 75,30 95,42" fill="none" stroke="#ffc4bf" stroke-width="1.2" opacity="0.4"/>
+                <path d="M25,55 C40,70 55,85 70,95" fill="url(#glassGrad)" opacity="0.5"/>
+                <rect x="88" y="55" width="10" height="3" rx="1" fill="url(#chrome)"/>
+              </g>
+            </g>
+
+            <g id="door-passenger-group" transform="translate(560 185)">
+              <g id="door-passenger" class="door-panel passenger">
+                <path d="M0,30 C20,5 55,-5 85,12 L95,80 C65,95 25,98 5,85 Z" fill="#a80000" stroke="#ff8a80" stroke-width="1"/>
+                <path d="M15,35 C40,20 65,22 80,35" fill="none" stroke="#ffb3ae" stroke-width="1" opacity="0.35"/>
+              </g>
+            </g>
+
+            <g transform="translate(318 275)">
+              <path d="M0,-14 L10,-10 L12,10 L0,16 L-12,10 L-10,-10 Z" fill="#f5c518" stroke="#8a7000" stroke-width="1"/>
+              <text x="-3.5" y="5" font-size="11" fill="#1a1a1a" font-family="Georgia, serif" font-weight="700">f</text>
+            </g>
+
+            <g id="sound-waves" opacity="0">
+              <path d="M450,150 Q470,120 490,150" fill="none" stroke="#c9a227" stroke-width="2"/>
+              <path d="M470,140 Q495,100 520,140" fill="none" stroke="#c9a227" stroke-width="2"/>
+              <path d="M490,132 Q520,88 550,132" fill="none" stroke="#e0c060" stroke-width="1.5" opacity="0.7"/>
+            </g>
+
+            <g id="spoiler" class="spoiler">
+              <rect x="-55" y="-6" width="110" height="8" rx="2" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+              <rect x="-48" y="-10" width="96" height="4" rx="1" fill="#333"/>
+              <rect x="-8" y="2" width="5" height="22" rx="1" fill="#2a2a2a"/>
+              <rect x="4" y="2" width="5" height="22" rx="1" fill="#2a2a2a"/>
+              <text class="spoiler-tag" x="-20" y="-16" fill="#c9a227" font-size="9" font-family="JetBrains Mono, monospace" opacity="0">ACTIVE</text>
+            </g>
+
+            <g id="headlight-group">
+              <path id="hl-left" d="M255,295 C275,285 310,288 328,300 C318,312 285,315 260,308 Z" fill="#3d3428" stroke="#aaa" stroke-width="1"/>
+              <path id="hl-right" d="M330,298 C348,292 370,298 382,310 C368,318 345,318 332,310 Z" fill="#3d3428" stroke="#888" stroke-width="0.8"/>
+              <ellipse id="hl-beam" cx="300" cy="360" rx="70" ry="36" fill="url(#headGlow)" opacity="0"/>
+            </g>
+
+            <path id="taillight" d="M775,300 C790,305 798,320 792,335 L770,338 C774,318 775,305 775,300 Z" fill="#5a0000"/>
+            <path d="M500,300 C560,285 620,290 660,315 C640,335 580,340 520,330 Z" fill="#0d0d0d" opacity="0.85"/>
+
+            <g id="wheel-front" class="wheel" transform="translate(320 385)">
+              <circle r="48" fill="#0a0a0a"/>
+              <circle r="42" fill="#141414" stroke="#666" stroke-width="3"/>
+              <path d="M-18,-8 A22,22 0 0 1 18,-6" fill="none" stroke="#f5c518" stroke-width="7" stroke-linecap="round"/>
+              <g class="rim-spokes">
+                <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="0.4s" repeatCount="indefinite" class="wheel-spin" begin="indefinite"/>
+                <circle r="26" fill="#1a1a1a" stroke="url(#rimMetal)" stroke-width="2"/>
+                <g stroke="url(#rimMetal)" stroke-width="3.2" stroke-linecap="round">
+                  <line x1="0" y1="-22" x2="0" y2="22"/>
+                  <line x1="-21" y1="-7" x2="21" y2="7"/>
+                  <line x1="-13" y1="18" x2="13" y2="-18"/>
+                  <line x1="21" y1="-7" x2="-21" y2="7"/>
+                  <line x1="13" y1="18" x2="-13" y2="-18"/>
+                </g>
+                <circle r="9" fill="url(#chrome)"/>
+                <circle r="4" fill="#111"/>
+                <circle r="7" fill="#f5c518" opacity="0.9"/>
+                <text x="-3" y="3.5" font-size="8" fill="#111" font-family="Georgia, serif" font-weight="700">f</text>
+              </g>
+            </g>
+
+            <g id="wheel-rear" class="wheel" transform="translate(690 378)">
+              <circle r="52" fill="#0a0a0a"/>
+              <circle r="46" fill="#141414" stroke="#666" stroke-width="3"/>
+              <path d="M-20,-8 A24,24 0 0 1 20,-6" fill="none" stroke="#f5c518" stroke-width="7.5" stroke-linecap="round"/>
+              <g class="rim-spokes">
+                <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="0.38s" repeatCount="indefinite" class="wheel-spin" begin="indefinite"/>
+                <circle r="28" fill="#1a1a1a" stroke="url(#rimMetal)" stroke-width="2"/>
+                <g stroke="url(#rimMetal)" stroke-width="3.4" stroke-linecap="round">
+                  <line x1="0" y1="-24" x2="0" y2="24"/>
+                  <line x1="-23" y1="-8" x2="23" y2="8"/>
+                  <line x1="-14" y1="20" x2="14" y2="-20"/>
+                  <line x1="23" y1="-8" x2="-23" y2="8"/>
+                  <line x1="14" y1="20" x2="-14" y2="-20"/>
+                </g>
+                <circle r="10" fill="url(#chrome)"/>
+                <circle r="4.5" fill="#111"/>
+                <circle r="7.5" fill="#f5c518" opacity="0.9"/>
+                <text x="-3.2" y="3.5" font-size="8.5" fill="#111" font-family="Georgia, serif" font-weight="700">f</text>
+              </g>
+            </g>
+
+            <g id="exhaust" opacity="0.12">
+              <ellipse cx="810" cy="355" rx="22" ry="10" fill="#ff9800" filter="url(#glow)"/>
+              <ellipse cx="820" cy="355" rx="10" ry="5" fill="#ffe082"/>
+            </g>
+
+            <!-- Horn blast rings -->
+            <g id="horn-blast" class="horn-blast" opacity="0">
+              <ellipse cx="280" cy="300" rx="40" ry="18" fill="none" stroke="#f5c518" stroke-width="3"/>
+              <ellipse cx="280" cy="300" rx="70" ry="30" fill="none" stroke="#ff9800" stroke-width="2"/>
+              <ellipse cx="280" cy="300" rx="100" ry="42" fill="none" stroke="#ffe082" stroke-width="1.5"/>
+            </g>
+
+            <!-- A/C airflow -->
+            <g id="climate-fx" class="climate-fx" opacity="0">
+              <path class="ac-flow" d="M430,250 Q450,230 470,250" fill="none" stroke="#9ed7ef" stroke-width="2"/>
+              <path class="ac-flow d2" d="M445,255 Q470,230 495,255" fill="none" stroke="#b8e8ff" stroke-width="1.8"/>
+              <path class="ac-flow d3" d="M460,260 Q490,235 520,260" fill="none" stroke="#7ec8e8" stroke-width="1.5"/>
+              <circle class="ac-dot" cx="440" cy="248" r="2.5" fill="#c8f0ff"/>
+              <circle class="ac-dot d2" cx="470" cy="242" r="2" fill="#a8e4ff"/>
+              <circle class="ac-dot d3" cx="500" cy="250" r="2.2" fill="#d0f4ff"/>
+            </g>
+            <text id="climate-label" x="470" y="278" class="tiny" fill="#9ed7ef" opacity="0.15" letter-spacing="0.2em">A/C</text>
+
+            <!-- Sport mode badge + underglow -->
+            <g id="sport-fx" class="sport-fx" opacity="0">
+              <ellipse cx="500" cy="410" rx="260" ry="14" fill="#e10600" opacity="0.35"/>
+              <rect x="455" y="195" width="90" height="22" rx="3" fill="#1a0505" stroke="#e10600" stroke-width="1.5"/>
+              <text x="468" y="211" fill="#ff4d4d" font-size="12" font-family="Archivo Narrow, sans-serif" letter-spacing="0.18em" font-weight="700">SPORT</text>
+            </g>
+
+            <!-- Lock indicators -->
+            <g id="lock-fx" class="lock-fx" opacity="0">
+              <g transform="translate(370 255)">
+                <rect x="-8" y="0" width="16" height="12" rx="2" fill="#c9a227" stroke="#8a7000"/>
+                <path d="M-5,0 V-6 A5,5 0 0 1 5,-6 V0" fill="none" stroke="#c9a227" stroke-width="2"/>
+              </g>
+              <g transform="translate(600 230)">
+                <rect x="-8" y="0" width="16" height="12" rx="2" fill="#c9a227" stroke="#8a7000"/>
+                <path d="M-5,0 V-6 A5,5 0 0 1 5,-6 V0" fill="none" stroke="#c9a227" stroke-width="2"/>
+              </g>
+              <text x="430" y="450" fill="#c9a227" font-size="11" font-family="JetBrains Mono, monospace" letter-spacing="0.14em">LOCKED</text>
+            </g>
+
+            <!-- Alarm strobes -->
+            <g id="alarm-fx" class="alarm-fx" opacity="0">
+              <ellipse class="alarm-strobe" cx="300" cy="300" rx="90" ry="50" fill="#ff1744" opacity="0.25"/>
+              <ellipse class="alarm-strobe d2" cx="720" cy="310" rx="70" ry="40" fill="#ff1744" opacity="0.2"/>
+              <circle class="alarm-beacon" cx="500" cy="160" r="10" fill="#ff1744"/>
+              <text x="400" y="140" fill="#ff8a80" font-size="12" font-family="JetBrains Mono, monospace" letter-spacing="0.2em">ALARM</text>
+            </g>
+
+            <text x="220" y="430" class="tiny" fill="#8a9096" opacity="0.7">SF90 STRADALE · LAB UNIT</text>
+          </g>
+
+          <g id="board-arduino" transform="translate(40 470)">
+            <rect width="150" height="58" rx="4" fill="#00796b" stroke="#26a69a" stroke-width="1.5"/>
+            <text x="14" y="24" fill="#e0f2f1" font-size="12" font-family="JetBrains Mono, monospace">ARDUINO</text>
+            <text id="arduino-status-text" x="14" y="44" fill="#b2dfdb" font-size="10" font-family="JetBrains Mono, monospace">ONLINE</text>
+            <circle id="arduino-pulse" cx="130" cy="30" r="6" fill="#80cbc4"/>
+          </g>
+          <g id="board-raspberry" transform="translate(770 470)">
+            <rect width="150" height="58" rx="4" fill="#6d2b4e" stroke="#c2185b" stroke-width="1.5"/>
+            <text x="14" y="24" fill="#fce4ec" font-size="12" font-family="JetBrains Mono, monospace">RASPBERRY</text>
+            <text id="raspberry-status-text" x="14" y="44" fill="#f8bbd0" font-size="10" font-family="JetBrains Mono, monospace">ONLINE</text>
+            <circle id="raspberry-pulse" cx="130" cy="30" r="6" fill="#f48fb1"/>
+          </g>
+          <path id="sync-line" d="M190 500 C 400 455, 560 455, 770 500" fill="none" stroke="#d40000" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.65"/>
+          <circle id="sync-dot" r="4" fill="#c9a227">
+            <animateMotion dur="2.4s" repeatCount="indefinite" path="M190 500 C 400 455, 560 455, 770 500"/>
+          </circle>
+        </svg>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <section class="metrics">
+        <article><span>RPM</span><strong id="m-rpm">—</strong></article>
+        <article><span>Velocidade</span><strong id="m-speed">—</strong></article>
+        <article><span>Temp. motor</span><strong id="m-temp">—</strong></article>
+        <article><span>Combustível</span><strong id="m-fuel">—</strong></article>
+      </section>
+
+      <section class="block controls">
+        <div class="block-head">
+          <h2>Comandos</h2>
+          <span class="hint">Atuadores</span>
+        </div>
+        <p class="group-label">Carroceria · Portas</p>
+        <div class="btn-row">
+          <button data-action="door" data-door="driver" data-open="true">Abrir Motorista</button>
+          <button data-action="door" data-door="driver" data-open="false" class="ghost">Fechar Motorista</button>
+          <button data-action="door" data-door="passenger" data-open="true">Abrir Passageiro</button>
+          <button data-action="door" data-door="passenger" data-open="false" class="ghost">Fechar Passageiro</button>
+        </div>
+        <div class="btn-row">
+          <button id="btn-both-doors-open" type="button" class="primary">Abrir Ambas</button>
+          <button id="btn-both-doors-close" type="button" class="ghost">Fechar Ambas</button>
+          <button data-action="roof" data-on="true">Abrir Teto</button>
+          <button data-action="roof" data-on="false" class="ghost">Fechar Teto</button>
+        </div>
+        <p class="group-label">Powertrain</p>
+        <div class="btn-row">
+          <button data-action="engine" data-on="true" class="primary">Ligar Ferrari</button>
+          <button data-action="engine" data-on="false" class="ghost">Desligar</button>
+          <button data-action="sound" data-on="true">Som ON</button>
+          <button data-action="sound" data-on="false" class="ghost">Som OFF</button>
+        </div>
+        <p class="group-label">Iluminação &amp; GPS</p>
+        <div class="btn-row">
+          <button data-action="headlight" data-on="true">Farol ON</button>
+          <button data-action="headlight" data-on="false" class="ghost">Farol OFF</button>
+          <button data-action="track" data-on="true">Rastrear</button>
+          <button data-action="track" data-on="false" class="ghost">Parar GPS</button>
+        </div>
+        <p class="group-label">Dinâmica</p>
+        <div class="btn-row">
+          <button data-action="sport" data-on="true" id="btn-sport-on">Sport ON</button>
+          <button data-action="sport" data-on="false" class="ghost" id="btn-sport-off">Sport OFF</button>
+          <button data-action="spoiler" data-on="true" id="btn-spoiler-on">Aerofólio OUT</button>
+          <button data-action="spoiler" data-on="false" class="ghost" id="btn-spoiler-off">Aerofólio IN</button>
+        </div>
+        <div class="btn-row">
+          <button data-action="climate" data-on="true" id="btn-ac-on">A/C ON</button>
+          <button data-action="climate" data-on="false" class="ghost" id="btn-ac-off">A/C OFF</button>
+          <button data-action="horn" data-on="true" id="btn-horn" class="primary">Buzina</button>
+        </div>
+        <p class="group-label">Segurança</p>
+        <div class="btn-row">
+          <button data-action="lock" data-on="true" class="ghost" id="btn-lock">Travar</button>
+          <button data-action="lock" data-on="false" id="btn-unlock">Destravar</button>
+          <button data-action="alarm" data-on="true" class="warn" id="btn-alarm-on">Armar Alarme</button>
+          <button data-action="alarm" data-on="false" class="ghost" id="btn-alarm-off">Desarmar</button>
+        </div>
+      </section>
+
+      <section class="block scenarios">
+        <div class="block-head">
+          <h2>Cenários</h2>
+          <span class="hint">Sequências</span>
+        </div>
+        <div class="btn-row auto">
+          <button data-scenario="startup">Startup</button>
+          <button data-scenario="track_day">Track Day</button>
+          <button data-scenario="valet">Valet</button>
+          <button data-scenario="secure" class="ghost">Secure</button>
+          <button data-scenario="sync_test">Teste Sync</button>
+        </div>
+      </section>
+
+      <section class="block research">
+        <div class="block-head">
+          <h2>Research Lab</h2>
+          <span class="hint">HIL · QoS · Paper</span>
+        </div>
+        <div class="research-metrics">
+          <article><span>SQI</span><strong id="r-sqi">—</strong></article>
+          <article><span>Lat p50</span><strong id="r-p50">—</strong></article>
+          <article><span>Power</span><strong id="r-power">—</strong></article>
+          <article><span>Twin</span><strong id="r-twin">—</strong></article>
+        </div>
+        <p class="chart-label">Espectro Web Audio</p>
+        <canvas id="spectrum" width="640" height="90" aria-label="Espectro Web Audio"></canvas>
+        <p class="chart-label">HIL latency / drops</p>
+        <canvas id="qos-chart" width="640" height="90" aria-label="QoS HIL latência"></canvas>
+        <div class="hil-box">
+          <label>Delay ms <input id="hil-delay" type="number" min="0" max="2000" value="0" /></label>
+          <label>Loss % <input id="hil-loss" type="number" min="0" max="100" value="0" /></label>
+          <button id="hil-enable" type="button" class="primary">HIL ON</button>
+          <button id="hil-disable" type="button" class="ghost">HIL OFF</button>
+        </div>
+        <div class="stats-stack">
+          <p class="tiny-ui" id="hil-stats">QoS —</p>
+          <p class="tiny-ui" id="energy-stats">Energia —</p>
+          <p class="tiny-ui" id="audit-stats">Audit —</p>
+        </div>
+        <p class="group-label">Experimentos</p>
+        <div class="btn-row auto">
+          <button data-experiment="sync_latency">Sync</button>
+          <button data-experiment="actuator_chain">Atuadores</button>
+          <button data-experiment="tracking_stability">GPS</button>
+          <button data-experiment="fault_injection" class="warn">Falha</button>
+          <button id="btn-paper" type="button">Paper Pack</button>
+        </div>
+        <p class="group-label">Visão</p>
+        <div class="vision-box">
+          <button id="vision-start" type="button">Webcam</button>
+          <button id="vision-stop" type="button" class="ghost">Parar</button>
+          <span class="tiny-ui">Gesto = partida · QR track = GPS</span>
+          <video id="vision-video" playsinline muted></video>
+          <canvas id="vision-canvas"></canvas>
+        </div>
+        <ul id="exp-list"></ul>
+      </section>
+
+      <section class="block logs">
+        <div class="block-head">
+          <h2>Logs</h2>
+          <span class="hint">Eventos</span>
+        </div>
+        <ul id="log-list"></ul>
+      </section>
+    </aside>
+  </main>
+
+  <script>
+/**
+ * Web Audio Lab — buzina, sirene, ronco (RPM), clique de trava + espectro.
+ */
+const FerrariAudio = (() => {
+  let ctx, master, analyser, engineOsc, engineGain, alarmNodes = [], dataArray;
+  let engineOn = false, alarmOn = false;
+
+  function ensure() {
+    if (ctx) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain();
+    master.gain.value = 0.4;
+    analyser = ctx.createAnalyser();
+    analyser.fftSize = 256;
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+    master.connect(analyser);
+    analyser.connect(ctx.destination);
+  }
+
+  async function resume() {
+    ensure();
+    if (ctx.state === "suspended") await ctx.resume();
+  }
+
+  function beep(freq, dur, type = "square", gain = 0.2, slideTo = null) {
+    ensure();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = type;
+    o.frequency.value = freq;
+    if (slideTo != null) {
+      o.frequency.setValueAtTime(freq, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(Math.max(40, slideTo), ctx.currentTime + dur);
+    }
+    g.gain.value = gain;
+    o.connect(g); g.connect(master);
+    o.start();
+    g.gain.setValueAtTime(gain, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    o.stop(ctx.currentTime + dur + 0.03);
+  }
+
+  /** Dual-tone car horn */
+  function horn() {
+    resume();
+    const t = ctx.currentTime;
+    // fundamental + fifth
+    [380, 480].forEach((f, i) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "sawtooth";
+      o.frequency.value = f;
+      g.gain.value = 0.001;
+      o.connect(g); g.connect(master);
+      o.start(t);
+      g.gain.exponentialRampToValueAtTime(0.22 - i * 0.04, t + 0.02);
+      g.gain.setValueAtTime(0.2 - i * 0.04, t + 0.28);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
+      o.stop(t + 0.58);
+    });
+    // short echo blip
+    setTimeout(() => beep(360, 0.12, "sawtooth", 0.12), 120);
+  }
+
+  function lockClick() {
+    resume();
+    beep(1900, 0.035, "square", 0.14);
+    setTimeout(() => beep(950, 0.05, "triangle", 0.1), 45);
+    setTimeout(() => beep(1400, 0.03, "square", 0.08), 110);
+  }
+
+  function unlockClick() {
+    resume();
+    beep(900, 0.04, "triangle", 0.1);
+    setTimeout(() => beep(1600, 0.05, "square", 0.12), 60);
+  }
+
+  /** Alternating police-style siren while armed */
+  function setAlarm(on) {
+    resume();
+    alarmOn = on;
+    alarmNodes.forEach((n) => { try { n.stop(); } catch (_) {} });
+    alarmNodes = [];
+    if (!on || !ctx) return;
+
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "square";
+    o.frequency.value = 780;
+    g.gain.value = 0.14;
+    o.connect(g); g.connect(master);
+    o.start();
+
+    // Sweep siren via LFO on frequency
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.type = "triangle";
+    lfo.frequency.value = 2.2;
+    lfoGain.gain.value = 220;
+    lfo.connect(lfoGain);
+    lfoGain.connect(o.frequency);
+    lfo.start();
+
+    const o2 = ctx.createOscillator();
+    const g2 = ctx.createGain();
+    o2.type = "sawtooth";
+    o2.frequency.value = 980;
+    g2.gain.value = 0.07;
+    o2.connect(g2); g2.connect(master);
+    o2.start();
+    const lfo2 = ctx.createOscillator();
+    const lfo2g = ctx.createGain();
+    lfo2.frequency.value = 2.2;
+    lfo2g.gain.value = 180;
+    lfo2.connect(lfo2g); lfo2g.connect(o2.frequency);
+    lfo2.start();
+
+    alarmNodes = [o, lfo, o2, lfo2];
+  }
+
+  function setEngine(on, rpm = 1200) {
+    resume();
+    engineOn = on;
+    if (!on) {
+      if (engineOsc) { try { engineOsc.stop(); } catch (_) {} engineOsc = null; }
+      if (engineGain) { try { engineGain.disconnect(); } catch (_) {} engineGain = null; }
+      return;
+    }
+    if (!engineOsc) {
+      engineOsc = ctx.createOscillator();
+      engineGain = ctx.createGain();
+      engineOsc.type = "sawtooth";
+      engineGain.gain.value = 0.05;
+      engineOsc.connect(engineGain); engineGain.connect(master);
+      engineOsc.start();
+    }
+    updateRpm(rpm);
+  }
+
+  function updateRpm(rpm) {
+    if (!engineOn || !engineOsc || !ctx) return;
+    const f = 45 + (Number(rpm) || 0) / 40;
+    engineOsc.frequency.setTargetAtTime(f, ctx.currentTime, 0.08);
+    if (engineGain) engineGain.gain.setTargetAtTime(0.04 + Math.min(0.12, rpm / 20000), ctx.currentTime, 0.1);
+  }
+
+  function getSpectrum() {
+    if (!analyser || !dataArray) return [];
+    analyser.getByteFrequencyData(dataArray);
+    return Array.from(dataArray);
+  }
+
+  return { resume, horn, lockClick, unlockClick, setAlarm, setEngine, updateRpm, getSpectrum };
+})();
+
+  </script>
+  <script>
+/**
+ * Demo Lab standalone (GitHub Pages) — simulação 100% no browser.
+ * Não depende do backend Python; ideal para botão "Abrir Interface" no README.
+ */
+(() => {
+  const $ = (sel) => document.querySelector(sel);
+  const logList = $("#log-list");
+  const expList = $("#exp-list");
+  let gpsAngle = 0;
+  let prevAudio = { engine: false, alarm: false, horn: false, lock: true };
+  let audioPrimed = false;
+  let hornTimer = null;
+  let wheelsSpinning = false;
+  let hil = { enabled: false, delay_ms: 0, loss_rate: 0, recent: [], sent: 0, delivered: 0, dropped: 0 };
+  let syncPulse = 0;
+  let sqi = 94;
+
+  const state = {
+    sensors: {
+      rpm: 800, speed_kmh: 0, engine_temp: 78, battery: 92, fuel: 68,
+      lat: -23.5505, lon: -46.6333, power_w: 0,
+    },
+    actuators: {
+      door: { driver: false, passenger: false },
+      roof: false, engine: false, sound: false, headlight: false,
+      tracking: false, alarm: false, spoiler: false, climate: false,
+      horn: false, sport_mode: false, lock: true,
+    },
+    boards: {
+      arduino: { online: true, sync: true },
+      raspberry: { online: true, sync: true },
+    },
+    last_event: "Demo Lab (modo browser)",
+    sync_pulse: 0,
+    sync_quality_index: 94,
+    twin: { mode: "IDLE" },
+    energy: { power_w: 0, battery_pct: 92, fuel_pct: 68 },
+    hil: { qos: { sent: 0, delivered: 0, dropped: 0, delivery_ratio: 1, mean_latency_ms: 0, consistency: "ok" }, recent: [] },
+    audit_tip: "demo" + Math.random().toString(16).slice(2, 10),
+  };
+
+  function pushLog(text) {
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong> — ${text}`;
+    logList.prepend(li);
+    while (logList.children.length > 40) logList.removeChild(logList.lastChild);
+  }
+
+  function setPill(el, online, onText, offText) {
+    el.classList.toggle("online", online);
+    el.classList.toggle("offline", !online);
+    el.textContent = online ? onText : offText;
+  }
+
+  function setBtnActive(id, on) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle("active-on", !!on);
+  }
+
+  function triggerHornVisual() {
+    const car = $("#car");
+    if (!car) return;
+    car.classList.add("horn-blast");
+    clearTimeout(hornTimer);
+    hornTimer = setTimeout(() => car.classList.remove("horn-blast"), 600);
+  }
+
+  function drawSpectrum() {
+    const canvas = $("#spectrum");
+    if (!canvas || !window.FerrariAudio) return;
+    const ctx = canvas.getContext("2d");
+    const data = FerrariAudio.getSpectrum();
+    const w = canvas.width, h = canvas.height;
+    ctx.fillStyle = "#0a0a0b";
+    ctx.fillRect(0, 0, w, h);
+    if (!data.length) return;
+    const barW = w / data.length;
+    for (let i = 0; i < data.length; i++) {
+      const bh = (data[i] / 255) * (h - 4);
+      ctx.fillStyle = i % 3 === 0 ? "#e10600" : "#f5c518";
+      ctx.fillRect(i * barW, h - bh, Math.max(1, barW - 1), bh);
+    }
+  }
+
+  function drawQosChart(recent) {
+    const canvas = $("#qos-chart");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width, h = canvas.height;
+    ctx.fillStyle = "#0a0a0b";
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = "#8a8580";
+    ctx.font = "11px sans-serif";
+    ctx.fillText("HIL latency (ms) · vermelho = drop", 8, 14);
+    if (!recent.length) return;
+    const lats = recent.map((e) => (e.status === "DROPPED" ? null : Number(e.latency_ms || 0)));
+    const max = Math.max(1, ...lats.filter((x) => x != null));
+    const step = w / Math.max(1, recent.length - 1);
+    ctx.beginPath();
+    let started = false;
+    recent.forEach((e, i) => {
+      const x = i * step;
+      if (e.status === "DROPPED") {
+        ctx.fillStyle = "#e10600";
+        ctx.fillRect(x - 2, 20, 4, h - 28);
+        started = false;
+        return;
+      }
+      const y = h - 8 - ((e.latency_ms || 0) / max) * (h - 30);
+      if (!started) { ctx.moveTo(x, y); started = true; }
+      else ctx.lineTo(x, y);
+    });
+    ctx.strokeStyle = "#f5c518";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  function syncAudio(a, s) {
+    if (!window.FerrariAudio) return;
+    if (!audioPrimed) {
+      prevAudio = {
+        engine: !!a.engine, alarm: !!a.alarm, horn: !!a.horn, lock: !!a.lock,
+      };
+      audioPrimed = true;
+      return;
+    }
+    if (a.engine !== prevAudio.engine) FerrariAudio.setEngine(!!a.engine, s.rpm || 1200);
+    if (a.engine) FerrariAudio.updateRpm(s.rpm || 0);
+    if (a.alarm !== prevAudio.alarm) FerrariAudio.setAlarm(!!a.alarm);
+    if (a.horn && !prevAudio.horn) {
+      FerrariAudio.horn();
+      triggerHornVisual();
+    }
+    if (a.lock !== prevAudio.lock) {
+      if (a.lock) FerrariAudio.lockClick();
+      else FerrariAudio.unlockClick();
+    }
+    prevAudio = {
+      engine: !!a.engine, alarm: !!a.alarm, horn: !!a.horn, lock: !!a.lock,
+    };
+  }
+
+  function applyTelemetry() {
+    $("#r-sqi").textContent = sqi.toFixed(1);
+    $("#sqi-status").textContent = `SQI ${sqi.toFixed(0)}`;
+    $("#r-p50").textContent = `${(6 + Math.random() * 5).toFixed(1)} ms`;
+  }
+
+  function applyState() {
+    const s = state.sensors;
+    const a = state.actuators;
+    const boards = state.boards;
+
+    $("#m-rpm").textContent = `${Math.round(s.rpm ?? 0)}`;
+    $("#m-speed").textContent = `${Number(s.speed_kmh ?? 0).toFixed(0)} km/h`;
+    $("#m-temp").textContent = `${Number(s.engine_temp ?? 0).toFixed(0)}°C`;
+    $("#m-fuel").textContent = `${Number(s.fuel ?? 0).toFixed(0)}%`;
+    $("#last-event").textContent = state.last_event || "—";
+    const synced = boards.arduino?.sync && boards.raspberry?.sync;
+    $("#sync-status").textContent = synced ? `SYNC OK #${state.sync_pulse ?? 0}` : "SYNC OFF";
+    $("#sqi-status").textContent = `SQI ${sqi.toFixed(0)}`;
+    $("#r-sqi").textContent = sqi.toFixed(1);
+
+    $("#door-driver").classList.toggle("open", !!a.door?.driver);
+    $("#door-passenger").classList.toggle("open", !!a.door?.passenger);
+    $("#roof-panel").classList.toggle("open", !!a.roof);
+    document.querySelectorAll(".roof-panel").forEach((el) => el.classList.toggle("open", !!a.roof));
+    $("#spoiler").classList.toggle("out", !!a.spoiler);
+
+    const car = $("#car");
+    if (car) {
+      car.classList.toggle("engine-on", !!a.engine);
+      car.classList.toggle("sport-on", !!a.sport_mode);
+      car.classList.toggle("climate-on", !!a.climate);
+      car.classList.toggle("locked", !!a.lock);
+      car.classList.toggle("alarm-on", !!a.alarm);
+    }
+    if (!!a.engine !== wheelsSpinning) {
+      wheelsSpinning = !!a.engine;
+      document.querySelectorAll(".wheel-spin").forEach((anim) => {
+        try {
+          if (wheelsSpinning) anim.beginElement();
+          else anim.endElement();
+        } catch (_) {}
+      });
+    }
+    const climateLabel = $("#climate-label");
+    if (climateLabel) climateLabel.setAttribute("opacity", a.climate ? "0.95" : "0.15");
+
+    setBtnActive("btn-sport-on", !!a.sport_mode);
+    setBtnActive("btn-spoiler-on", !!a.spoiler);
+    setBtnActive("btn-ac-on", !!a.climate);
+    setBtnActive("btn-lock", !!a.lock);
+    setBtnActive("btn-alarm-on", !!a.alarm);
+
+    const hl = a.headlight ? "#ffe082" : "#3d3428";
+    $("#hl-left").setAttribute("fill", hl);
+    $("#hl-right").setAttribute("fill", a.headlight ? "#ffe082" : "#3d3428");
+    const beam = $("#hl-beam");
+    if (beam) beam.setAttribute("opacity", a.headlight ? "0.55" : "0");
+    if (a.headlight) {
+      $("#hl-left").setAttribute("filter", "url(#glow)");
+      $("#hl-right").setAttribute("filter", "url(#glow)");
+    } else {
+      $("#hl-left").removeAttribute("filter");
+      $("#hl-right").removeAttribute("filter");
+    }
+    const tail = $("#taillight");
+    if (tail) tail.setAttribute("fill", a.engine ? "#ff1744" : "#5a0000");
+
+    $("#exhaust").setAttribute("opacity", a.engine ? "0.85" : "0.12");
+    $("#sound-waves").setAttribute("opacity", a.sound ? "0.95" : "0");
+    $("#gps-dot").setAttribute("opacity", a.tracking ? "1" : "0.15");
+
+    if (a.tracking) {
+      gpsAngle += 0.12;
+      $("#gps-dot").setAttribute("cx", 70 + 62 * Math.cos(gpsAngle));
+      $("#gps-dot").setAttribute("cy", 55 + 32 * Math.sin(gpsAngle));
+    }
+
+    $("#arduino-status-text").textContent = boards.arduino?.online ? "ONLINE" : "OFFLINE";
+    $("#raspberry-status-text").textContent = boards.raspberry?.online ? "ONLINE" : "OFFLINE";
+    $("#sync-line").setAttribute("opacity", synced ? "0.85" : "0.15");
+    $("#sync-dot").style.display = synced ? "block" : "none";
+
+    state.twin.mode = a.alarm ? "SECURE" : a.engine ? (a.sport_mode ? "SPORT" : "RUNNING") : a.lock ? "IDLE" : "READY";
+    $("#r-twin").textContent = state.twin.mode;
+    const power = a.engine ? (a.sport_mode ? 420 : 180) + (a.headlight ? 40 : 0) + (a.climate ? 60 : 0) : (a.lock ? 8 : 15);
+    state.energy.power_w = power;
+    state.sensors.power_w = power;
+    $("#r-power").textContent = `${power} W`;
+    $("#energy-stats").textContent =
+      `Energia P=${power}W · bat=${state.sensors.battery}% · fuel=${Number(state.sensors.fuel).toFixed(0)}%`;
+
+    const q = {
+      sent: hil.sent, delivered: hil.delivered, dropped: hil.dropped,
+      delivery_ratio: hil.sent ? (hil.delivered / hil.sent).toFixed(2) : "1.00",
+      mean_latency_ms: hil.enabled ? hil.delay_ms + Math.round(Math.random() * 8) : 4,
+      consistency: hil.enabled && hil.loss_rate > 0.2 ? "degraded" : "ok",
+    };
+    $("#hil-stats").textContent =
+      `QoS sent=${q.sent} del=${q.delivered} drop=${q.dropped} ratio=${q.delivery_ratio}` +
+      ` · lat=${q.mean_latency_ms}ms · ${q.consistency}`;
+    drawQosChart(hil.recent);
+    $("#audit-stats").textContent = `Audit tip ${String(state.audit_tip).slice(0, 18)}…`;
+
+    syncAudio(a, s);
+    applyTelemetry();
+  }
+
+  function pulse(event) {
+    syncPulse = (syncPulse + 1) % 1000;
+    state.sync_pulse = syncPulse;
+    state.last_event = event;
+    state.sync_quality_index = sqi;
+    hil.sent += 1;
+    const drop = hil.enabled && Math.random() < hil.loss_rate;
+    if (drop) {
+      hil.dropped += 1;
+      hil.recent.push({ status: "DROPPED", latency_ms: 0 });
+    } else {
+      hil.delivered += 1;
+      const lat = (hil.enabled ? hil.delay_ms : 0) + 3 + Math.random() * 10;
+      hil.recent.push({ status: "OK", latency_ms: lat });
+    }
+    if (hil.recent.length > 40) hil.recent.shift();
+    sqi = Math.max(55, Math.min(99, sqi + (Math.random() * 3 - 1)));
+    pushLog(event);
+    applyState();
+  }
+
+  function applyAction(payload) {
+    const a = state.actuators;
+    const s = state.sensors;
+    if (payload.action === "door") {
+      a.door[payload.door_id] = !!payload.open;
+      if (payload.open) a.lock = false;
+    }
+    if (payload.action === "roof") a.roof = !!payload.on;
+    if (payload.action === "engine") {
+      a.engine = !!payload.on;
+      if (a.engine) {
+        a.alarm = false;
+        a.lock = false;
+        s.rpm = a.sport_mode ? 4200 : 1800;
+        s.speed_kmh = a.sport_mode ? 95 : 35;
+      } else {
+        s.rpm = 800;
+        s.speed_kmh = 0;
+        a.sport_mode = false;
+      }
+    }
+    if (payload.action === "sound") a.sound = !!payload.on;
+    if (payload.action === "headlight") a.headlight = !!payload.on;
+    if (payload.action === "track") a.tracking = !!payload.on;
+    if (payload.action === "alarm") {
+      a.alarm = !!payload.on;
+      if (a.alarm) {
+        a.engine = false;
+        a.lock = true;
+        s.rpm = 800;
+        s.speed_kmh = 0;
+      }
+    }
+    if (payload.action === "spoiler") a.spoiler = !!payload.on;
+    if (payload.action === "climate") a.climate = !!payload.on;
+    if (payload.action === "horn") {
+      a.horn = true;
+      if (window.FerrariAudio) { FerrariAudio.resume(); FerrariAudio.horn(); }
+      triggerHornVisual();
+      setTimeout(() => { a.horn = false; }, 400);
+    }
+    if (payload.action === "sport") {
+      a.sport_mode = !!payload.on;
+      if (a.sport_mode && a.engine) {
+        a.spoiler = true;
+        s.rpm = 4500;
+        s.speed_kmh = 120;
+      }
+    }
+    if (payload.action === "lock") {
+      a.lock = !!payload.on;
+      if (a.lock) {
+        a.door.driver = false;
+        a.door.passenger = false;
+      }
+    }
+    if (payload.action === "simulate") runScenario(payload.scenario);
+    else pulse(payload.action === "door"
+      ? `Porta ${payload.door_id} ${payload.open ? "aberta" : "fechada"}`
+      : `${payload.action} → ${payload.on}`);
+  }
+
+  function runScenario(name) {
+    const a = state.actuators;
+    const s = state.sensors;
+    if (name === "startup") {
+      a.alarm = false; a.lock = false; a.engine = true; a.headlight = true; a.sound = true;
+      s.rpm = 2200; s.speed_kmh = 40;
+    } else if (name === "track_day") {
+      a.alarm = false; a.engine = true; a.sport_mode = true; a.spoiler = true;
+      a.tracking = true; a.roof = true; a.lock = false;
+      s.rpm = 5200; s.speed_kmh = 145;
+    } else if (name === "valet") {
+      a.engine = false; a.door.driver = true; a.climate = true; a.sound = true; a.lock = false;
+      s.rpm = 800; s.speed_kmh = 0;
+    } else if (name === "secure") {
+      a.engine = false; a.roof = false; a.door.driver = false; a.door.passenger = false;
+      a.lock = true; a.alarm = true; a.headlight = false; a.sound = false; a.tracking = false;
+      a.sport_mode = false; a.spoiler = false;
+      s.rpm = 800; s.speed_kmh = 0;
+    } else if (name === "sync_test") {
+      let n = 0;
+      const tick = () => {
+        a.headlight = !a.headlight;
+        n += 1;
+        state.boards.arduino.sync = true;
+        state.boards.raspberry.sync = true;
+        pulse(`Sync test #${n}`);
+        if (n < 8) setTimeout(tick, 280);
+      };
+      tick();
+      return;
+    }
+    pulse(`Cenário ${name}`);
+  }
+
+  function runExperiment(name) {
+    if (name === "fault_injection") sqi = 58;
+    if (name === "sync_latency") sqi = 96;
+    if (name === "actuator_chain") {
+      applyAction({ action: "engine", on: true });
+      setTimeout(() => applyAction({ action: "headlight", on: true }), 200);
+      setTimeout(() => applyAction({ action: "spoiler", on: true }), 400);
+    }
+    if (name === "tracking_stability") applyAction({ action: "track", on: true });
+    const id = Math.random().toString(16).slice(2, 8);
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${name}</strong> · SQI ${sqi.toFixed(0)} · demo-id ${id}`;
+    expList.prepend(li);
+    pulse(`Experimento ${name}`);
+  }
+
+  document.querySelectorAll("button[data-action]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (window.FerrariAudio) FerrariAudio.resume();
+      const action = btn.dataset.action;
+      const payload = { action };
+      if (action === "door") {
+        payload.door_id = btn.dataset.door;
+        payload.open = btn.dataset.open === "true";
+      } else {
+        payload.on = btn.dataset.on === "true";
+      }
+      applyAction(payload);
+    });
+  });
+
+  $("#btn-both-doors-open")?.addEventListener("click", () => {
+    applyAction({ action: "door", door_id: "driver", open: true });
+    setTimeout(() => applyAction({ action: "door", door_id: "passenger", open: true }), 120);
+  });
+  $("#btn-both-doors-close")?.addEventListener("click", () => {
+    applyAction({ action: "door", door_id: "driver", open: false });
+    setTimeout(() => applyAction({ action: "door", door_id: "passenger", open: false }), 120);
+  });
+
+  document.querySelectorAll("button[data-scenario]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (window.FerrariAudio) FerrariAudio.resume();
+      runScenario(btn.dataset.scenario);
+    });
+  });
+
+  document.querySelectorAll("button[data-experiment]").forEach((btn) => {
+    btn.addEventListener("click", () => runExperiment(btn.dataset.experiment));
+  });
+
+  $("#hil-enable")?.addEventListener("click", () => {
+    hil.enabled = true;
+    hil.delay_ms = Number($("#hil-delay").value || 0);
+    hil.loss_rate = Number($("#hil-loss").value || 0) / 100;
+    pushLog(`HIL ON delay=${hil.delay_ms} loss=${hil.loss_rate}`);
+    applyState();
+  });
+  $("#hil-disable")?.addEventListener("click", () => {
+    hil.enabled = false;
+    hil.delay_ms = 0;
+    hil.loss_rate = 0;
+    pushLog("HIL OFF");
+    applyState();
+  });
+
+  $("#btn-paper")?.addEventListener("click", () => {
+    const tex = [
+      "% Ferrari Lab — Paper Pack (demo GitHub Pages)",
+      "\\section{Sync Quality Index}",
+      `SQI demo = ${sqi.toFixed(1)}`,
+      "\\section{Audit}",
+      `tip = ${state.audit_tip}`,
+    ].join("\n");
+    const blob = new Blob([tex], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ferrari-paper-pack-demo.tex";
+    a.click();
+    pushLog("Paper pack (demo) baixado");
+  });
+
+  $("#vision-start")?.addEventListener("click", () => {
+    pushLog("Webcam: no Demo Lab use a versão local (start.ps1) para visão completa");
+  });
+  $("#vision-stop")?.addEventListener("click", () => pushLog("Webcam off"));
+
+  // Sensor drift + heartbeat visual
+  setInterval(() => {
+    const t = Date.now() / 1000;
+    const a = state.actuators;
+    const s = state.sensors;
+    if (a.engine) {
+      s.rpm = (a.sport_mode ? 3800 : 1600) + 400 * Math.sin(t / 2);
+      s.speed_kmh = Math.max(0, (a.sport_mode ? 90 : 30) + 15 * Math.sin(t / 3));
+      s.engine_temp = 85 + 8 * Math.sin(t / 20);
+      s.fuel = Math.max(5, s.fuel - 0.002);
+    } else {
+      s.rpm = 780 + 30 * Math.sin(t / 5);
+      s.engine_temp = 72 + 3 * Math.sin(t / 30);
+    }
+    syncPulse++;
+    state.sync_pulse = syncPulse % 1000;
+    applyState();
+  }, 1800);
+
+  setPill($("#ws-status"), true, "DEMO online", "offline");
+  pushLog("Demo Lab pronto (GitHub Pages)");
+  applyState();
+  setInterval(drawSpectrum, 80);
+})();
+
+  </script>
+</body>
+</html>

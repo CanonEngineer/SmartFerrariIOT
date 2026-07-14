@@ -50,13 +50,14 @@ def make_lab_button():
     d.text((70, 95), "Ferrari Lab", fill=INK, font=font(54, True))
     # URL pill as button
     rounded(d, (70, 165, 620, 220), (42, 12, 12), 14, outline=(255, 77, 77), width=2)
-    d.text((95, 178), "http://127.0.0.1:8001", fill=(255, 180, 180), font=font(28, True))
-    # credentials
-    d.text((660, 165), "Login", fill=MUTED, font=font(18))
-    rounded(d, (660, 188, 820, 224), PANEL, 10, outline=LINE)
-    d.text((680, 196), "admin", fill=GOLD, font=font(20, True))
-    rounded(d, (840, 188, 1080, 224), PANEL, 10, outline=LINE)
-    d.text((860, 196), "ferrari123", fill=GOLD, font=font(20, True))
+    d.text((95, 178), "canonengineer.github.io/SmartFerrariIOT", fill=(255, 180, 180), font=font(22, True))
+    # credentials (lab completo local)
+    d.text((660, 148), "Demo online", fill=MUTED, font=font(16))
+    d.text((660, 175), "Local login", fill=MUTED, font=font(16))
+    rounded(d, (660, 198, 820, 234), PANEL, 10, outline=LINE)
+    d.text((680, 206), "admin", fill=GOLD, font=font(20, True))
+    rounded(d, (840, 198, 1080, 234), PANEL, 10, outline=LINE)
+    d.text((860, 206), "ferrari123", fill=GOLD, font=font(20, True))
     # novo nome = quebra cache do GitHub Camo
     save(img, "lab-cta.png")
     save(img, "lab-open-button.png")
