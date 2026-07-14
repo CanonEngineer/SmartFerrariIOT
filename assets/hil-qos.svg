@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" role="img" aria-label="HIL QoS flow">
+  <rect width="920" height="360" rx="16" fill="#0c0d0f"/>
+  <text x="36" y="40" fill="#f4f1ec" font-family="Segoe UI, Arial" font-size="20" font-weight="700">Co-simulação HIL  delay / perda / QoS</text>
+  <text x="36" y="64" fill="#8b8680" font-family="Consolas, monospace" font-size="12">Fault injection configurável · delivery_ratio · consistência eventual</text>
+
+  <g font-family="Segoe UI, Arial" text-anchor="middle">
+    <rect x="50" y="120" width="150" height="80" rx="10" fill="#1e222b" stroke="#7ec8e8"/>
+    <text x="125" y="155" fill="#7ec8e8" font-size="14" font-weight="700">UI / API</text>
+    <text x="125" y="178" fill="#8b8680" font-size="11">comando</text>
+
+    <rect x="260" y="120" width="180" height="80" rx="10" fill="#2a1212" stroke="#d40000"/>
+    <text x="350" y="150" fill="#ff8a80" font-size="14" font-weight="700">HIL Engine</text>
+    <text x="350" y="172" fill="#c8c4bc" font-size="11">delay_ms · loss_rate</text>
+    <text x="350" y="188" fill="#8b8680" font-size="10">sent / delivered / drop</text>
+
+    <rect x="500" y="120" width="160" height="80" rx="10" fill="#1e222b" stroke="#3d9a6a"/>
+    <text x="580" y="155" fill="#9ed4b5" font-size="14" font-weight="700">Twin / Actuators</text>
+    <text x="580" y="178" fill="#8b8680" font-size="11">mutate + audit</text>
+
+    <rect x="720" y="120" width="150" height="80" rx="10" fill="#1e222b" stroke="#c9a227"/>
+    <text x="795" y="155" fill="#e4d4a0" font-size="14" font-weight="700">Lab Charts</text>
+    <text x="795" y="178" fill="#8b8680" font-size="11">QoS · latency</text>
+  </g>
+
+  <g stroke="#8b8680" stroke-width="1.5" fill="none">
+    <path d="M200 160 H260"/>
+    <path d="M440 160 H500"/>
+    <path d="M660 160 H720"/>
+    <path d="M795 200 V240 H350 V200" stroke-dasharray="5 4" stroke="#c9a227"/>
+  </g>
+
+  <rect x="50" y="270" width="820" height="60" rx="10" fill="#141618" stroke="rgba(244,241,236,0.1)"/>
+  <text x="70" y="305" fill="#c8c4bc" font-family="Consolas, monospace" font-size="13">QoS: delivery_ratio = delivered/sent · loss_observed = dropped/sent · consistency  {strong-lab, eventual}</text>
+</svg>
